@@ -14,7 +14,6 @@ internal class ReadlineObfuscationNeedsFactory
         ObfuscationSettings? obfuscationSettings = null;
         List<ProtectionSetting>? protectionSettings = null;
         string? criticalsFile = null;
-        string? loggingFile = null;
         string? obfuscationFile = null;
 
         if (!File.Exists(KnownConfigNames.Criticals))
@@ -22,10 +21,7 @@ internal class ReadlineObfuscationNeedsFactory
             criticalsFile = AskForConfigFile("criticals", KnownConfigNames.Criticals, cancellationToken);
         }
 
-        if (!File.Exists(KnownConfigNames.Logging))
-        {
-            loggingFile = AskForConfigFile("logging", KnownConfigNames.Logging, cancellationToken);
-        }
+        // logging is configured in code now (BitMonoModule), no logging.json is read anymore (#295)
 
         if (!File.Exists(KnownConfigNames.Obfuscation))
         {
@@ -268,7 +264,6 @@ internal class ReadlineObfuscationNeedsFactory
             Way = ObfuscationNeedsWay.Readline,
             Protections = protections,
             CriticalsFile = criticalsFile,
-            LoggingFile = loggingFile,
             ObfuscationFile = obfuscationFile,
         };
     }

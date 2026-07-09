@@ -38,7 +38,6 @@ Available options:
 - ``-p, --protections``: Which protections to use
 - ``--protections-file``: Custom protections config file
 - ``--criticals-file``: Custom criticals config file
-- ``--logging-file``: Custom logging config file
 - ``--obfuscation-file``: Custom obfuscation config file
 - ``-n, --output-name``: Custom output file name (default: same as input)
 - ``--no-watermark``: Turn off watermarking

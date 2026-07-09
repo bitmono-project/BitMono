@@ -91,9 +91,9 @@ Don't want config files in your repo? Pick the protections (or a preset) right i
    .. code-block:: xml
 
       <ItemGroup>
-        <None Update="obfuscation.json;protections.json;criticals.json;logging.json"
+        <None Update="obfuscation.json;protections.json;criticals.json"
               CopyToOutputDirectory="Never" />
-        <Content Remove="obfuscation.json;protections.json;criticals.json;logging.json" />
+        <Content Remove="obfuscation.json;protections.json;criticals.json" />
       </ItemGroup>
 
 MSBuild properties
