@@ -7,7 +7,7 @@
   <Import Project="$(MSBuildThisFileDirectory)..\..\props\SharedProjectProps.props" />
 
   <ItemGroup>
-    <PackageReference Include="NullGuard.Fody" Version="3.1.0" PrivateAssets="All" />
+    <PackageReference Include="NullGuard.Fody" Version="3.1.1" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
