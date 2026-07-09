@@ -68,17 +68,15 @@ runs:
         # TargetFramework is intentionally NOT passed to restore: restore is a superset (all TFMs anyway),
         # and a global TargetFramework (empty for multi-TFM libs, a concrete TFM for the CLI matrix) leaks
         # into the netstandard2.0-only BitMono.Analyzers ProjectReference and breaks restore ("Invalid
-        # framework identifier ''") or the later build (NETSDK1005). Build/test below still pass it.
+        # framework identifier ''") or the later build (NETSDK1005). Build below still passes it.
         echo "dotnet-restore=dotnet restore \$PROJECT_PATH ${{ steps.set-runtime-flag.outputs.runtime }} -p:Configuration=Release" >> $GITHUB_OUTPUT
         echo "dotnet-build=dotnet build \$PROJECT_PATH --configuration Release --no-restore ${{ steps.set-runtime-flag.outputs.runtime }} -p:TargetFramework=${{ inputs.target_framework }} -p:BitMonoVersion=${{ steps.get-version.outputs.version }}" >> $GITHUB_OUTPUT
-        echo "dotnet-test=dotnet test \$PROJECT_PATH --configuration Release --no-restore --no-build ${{ steps.set-runtime-flag.outputs.runtime }} -p:TargetFramework=${{ inputs.target_framework }}" >> $GITHUB_OUTPUT
       shell: bash
 
     # Install dependencies (separate step for caching)
     - name: Install dependencies
       run: |
         ${{ steps.common-commands.outputs.dotnet-restore }}
-        pwsh -File .github/actions/project-build/run-command-for-every-tests-project.ps1 "$GITHUB_WORKSPACE/tests" '${{ steps.common-commands.outputs.dotnet-restore }}'
       env:
         PROJECT_PATH: ${{ inputs.project_path }}
       shell: bash
@@ -87,15 +85,6 @@ runs:
     - name: Build
       run: |
         ${{ steps.common-commands.outputs.dotnet-build }}
-        pwsh -File .github/actions/project-build/run-command-for-every-tests-project.ps1 "$GITHUB_WORKSPACE/tests" '${{ steps.common-commands.outputs.dotnet-build }}'
-      env:
-        PROJECT_PATH: ${{ inputs.project_path }}
-      shell: bash
-
-    # Test project
-    - name: Test
-      run: |
-        pwsh -File .github/actions/project-build/run-command-for-every-tests-project.ps1 "$GITHUB_WORKSPACE/tests" '${{ steps.common-commands.outputs.dotnet-test }}'
       env:
         PROJECT_PATH: ${{ inputs.project_path }}
       shell: bash

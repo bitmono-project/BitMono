@@ -90,6 +90,36 @@ jobs:
           path: "./src/BitMono.CLI/bin/Release/${{ matrix.target-framework }}/${{ matrix.runtime }}/BitMono-v${{ steps.project-build.outputs.version }}-CLI-${{ matrix.target-framework }}-${{ matrix.runtime }}.zip"
           if-no-files-found: error
 
+  Test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        env:
+          DOTNET_NOLOGO: true
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+          DOTNET_CLI_TELEMETRY_OPTOUT: true
+        with:
+          dotnet-version: 10.x
+
+      # Test projects are net10.0-only (props/SharedTestProps.props), so they run once here rather than
+      # riding the per-TFM/per-RID build matrix above (where forcing -p:TargetFramework=net462 etc. can't work).
+      - name: Test
+        run: |
+          set -e
+          for proj in test/BitMono.*.Tests/BitMono.*.Tests.csproj; do
+            echo "::group::$proj"
+            dotnet test "$proj" -c Release
+            echo "::endgroup::"
+          done
+        shell: bash
+
   UnityPackage:
     runs-on: ubuntu-latest
     timeout-minutes: 30   # old Linux editors can hang on the Bee script-compile; fail fast, don't sit 60min
@@ -311,7 +341,7 @@ jobs:
 
   Release:
     if: github.event_name == 'create' && github.event.ref_type == 'tag'
-    needs: [Build, UnityPackage]
+    needs: [Build, Test, UnityPackage]
     runs-on: ubuntu-latest
     permissions:
       contents: write   # create/update the GitHub release
