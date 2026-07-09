@@ -98,20 +98,15 @@ jobs:
       fail-fast: false    # one Unity version failing must NOT cancel the others (was the cascade red)
       max-parallel: 2     # throttle Unity license activation — avoid concurrent-activation flakiness (game-ci #597)
       matrix:
-        # Note:
-        # GameCI currently has delays publishing some newer Unity versions to Docker Hub.
-        # Newer tags (post-2024-05-16), e.g. 2022.3.50f1 and 6000.0.x (6.0/6.1/6.2), may be unavailable.
-        # See GameCI announcement in Discord. Using last known published versions instead.
+        # One CI job per Unity LTS line; each produces a per-version download artifact.
+        # Version needs a published unityci/editor image (GameCI auto-publishes within hours of a Unity release).
         unity-version: [
-          2019.4.40f1,
-          2020.3.48f1,
-          2021.3.45f1,
-          2022.3.29f1,     # replaced 2022.3.50f1 (not published)
-          6000.0.2f1       # replaced 6.0.0f1/6.1.0f1/6.2.0f1 (not published)
-          # 2022.3.50f1,   # not published on unityci/editor yet
-          # 6.0.0f1,       # not published on unityci/editor yet
-          # 6.1.0f1,       # not published on unityci/editor yet
-          # 6.2.0f1        # not published on unityci/editor yet
+          2019.4.40f1,     # Unity 2019 LTS
+          2020.3.48f1,     # Unity 2020 LTS
+          2021.3.45f1,     # Unity 2021 LTS
+          2022.3.29f1,     # Unity 2022 LTS
+          6000.0.2f1,      # Unity 6.0 LTS
+          6000.3.19f1      # Unity 6.3 LTS
         ]
     steps:
       - name: Checkout code
