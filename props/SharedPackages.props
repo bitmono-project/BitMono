@@ -1,9 +1,9 @@
 ﻿<Project>
 
   <ItemGroup>
-    <PackageReference Include="AsmResolver" Version="6.0.0" />
-    <PackageReference Include="AsmResolver.DotNet" Version="6.0.0" />
-    <PackageReference Include="AsmResolver.PE" Version="6.0.0" />
+    <PackageReference Include="AsmResolver" Version="6.0.1" />
+    <PackageReference Include="AsmResolver.DotNet" Version="6.0.1" />
+    <PackageReference Include="AsmResolver.PE" Version="6.0.1" />
     <PackageReference Include="JetBrains.Annotations" Version="2026.2.0" />
   </ItemGroup>
 
