@@ -25,9 +25,11 @@ Levels
    * - ``Minimal``
      - ``FullRenamer``, ``NoNamespaces``, ``BitTimeDateStamp``
    * - ``Balanced``
-     - Minimal + ``StringsEncryption``, ``ObjectReturnType``, ``AntiDe4dot``, ``AntiILdasm``, ``BillionNops``
+     - Minimal + ``StringsEncryption``, ``ObjectReturnType``, ``AntiDe4dot``, ``AntiILdasm``,
+       ``BillionNops``
    * - ``Maximum``
-     - Balanced + ``AntiDebugBreakpoints``, ``AntiDecompiler``, ``UnmanagedString``, ``DotNetHook``, ``CallToCalli``, ``BitMethodDotnet``, ``BitDecompiler``, ``BitDotNet``, ``BitMono``
+     - Balanced + ``AntiDebugBreakpoints``, ``AntiDecompiler``, ``UnmanagedString``, ``DotNetHook``,
+       ``CallToCalli``, ``BitMethodDotnet``, ``BitDecompiler``, ``BitDotNet``, ``BitMono``
 
 .. note::
 
@@ -35,6 +37,10 @@ Levels
    ``UnmanagedString``, and the runtime hookers (``DotNetHook``, ``CallToCalli``). These are the
    most aggressive and the most runtime-specific — make sure they fit your target before shipping.
    See :doc:`../developers/protection-runtime-moniker` and :doc:`../developers/native-code`.
+
+``LocalVariableEncoding`` is intentionally absent from every preset. Its interactions with complete
+preset combinations and non-CoreCLR runtimes have not been validated. Enable it explicitly with a
+``Custom`` configuration in ``protections.json`` or with ``-p LocalVariableEncoding``.
 
 How to choose a preset
 ----------------------

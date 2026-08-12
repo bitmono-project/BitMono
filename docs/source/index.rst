@@ -35,6 +35,7 @@ Table of Contents:
    protections/bitmono
    protections/bittimedatestamp
    protections/bitmethoddotnet
+   protections/localvariableencoding
    protections/antidecompiler
    protections/antidebugbreakpoints
    protections/calltocalli

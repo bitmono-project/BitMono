@@ -75,6 +75,7 @@ The **[docs][bitmono_docs]** cover every protection, configuration option, and m
 * **[UnmanagedString][unmanagedstring_source]** (based on existing protection)
 * **[BitDotNet][bitdotnet_source]** (based and improved on existing protection)
 * **[BitMethodDotnet][bitmethoddotnet_source]** (based and improved on existing protection)
+* **[LocalVariableEncoding](https://docs.bitmono.dev/en/latest/protections/localvariableencoding.html)**
 * **[DotNetHook][dotnethook_source]** (based on existing protection)
 * CallToCalli
 * ObjectReturnType

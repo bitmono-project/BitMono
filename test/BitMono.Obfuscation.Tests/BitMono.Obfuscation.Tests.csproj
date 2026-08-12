@@ -12,6 +12,7 @@
     <ProjectReference Include="..\TestBinaries\DotNet\BitMono.Obfuscation.TestCases.CosturaDecompressor\BitMono.Obfuscation.TestCases.CosturaDecompressor.csproj" />
     <!-- Build-only: produces the reflection sample exe the end-to-end test obfuscates and runs. -->
     <ProjectReference Include="..\TestBinaries\DotNet\BitMono.Obfuscation.TestCases.Reflection\BitMono.Obfuscation.TestCases.Reflection.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\TestBinaries\DotNet\BitMono.Obfuscation.TestCases.LocalVariableEncoding\BitMono.Obfuscation.TestCases.LocalVariableEncoding.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>

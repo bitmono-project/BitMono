@@ -24,6 +24,7 @@ public class IL2CPPCompatibilityTests
         new object[] { typeof(BitDotNet) },
         new object[] { typeof(BitDecompiler) },
         new object[] { typeof(AntiDecompiler) },
+        new object[] { typeof(LocalVariableEncoding) },
     };
 
     // These do only pure managed metadata/IL edits that survive into global-metadata.dat or run AOT.
