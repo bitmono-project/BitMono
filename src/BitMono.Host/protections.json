@@ -53,6 +53,10 @@
       "Enabled": false
     },
     {
+      "Name": "LocalVariableEncoding",
+      "Enabled": false
+    },
+    {
       "Name": "BitDecompiler",
       "Enabled": false
     },

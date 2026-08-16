@@ -74,7 +74,7 @@ IL2CPP-compatible (kept):
 Skipped on IL2CPP (would break the ``il2cpp.exe`` build, or only affect the discarded managed PE):
 **UnmanagedString**, **CallToCalli**, **DotNetHook**, **BitMethodDotnet**, **ObjectReturnType**,
 **AntiDe4dot**, **BillionNops**, **AntiILdasm**, **BitTimeDateStamp**, **AntiDecompiler**, **BitMono**,
-**BitDotNet**, **BitDecompiler**.
+**BitDotNet**, **BitDecompiler**, **LocalVariableEncoding**.
 
 Inspecting the metadata
 ~~~~~~~~~~~~~~~~~~~~~~~~~

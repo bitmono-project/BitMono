@@ -18,6 +18,7 @@ namespace BitMono.Obfuscation.Tests.Reflection;
 // End-to-end proof that reflection survives obfuscation: obfuscate the reflection-heavy sample exe
 // (renaming on, reflection-exclude on) and run it. Its Main exits non-zero if any reflection lookup
 // returns null, so a green run means the analyzer kept the reflected members intact.
+[Collection(global::BitMono.Obfuscation.Tests.ObfuscationEndToEndCollection.Name)]
 public class ReflectionEndToEndTests
 {
     private const string FixtureName = "BitMono.Obfuscation.TestCases.Reflection";

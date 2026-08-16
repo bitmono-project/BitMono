@@ -77,6 +77,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitMono.IL2CPP.Tests", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitMono.Obfuscation.TestCases.Reflection", "test\TestBinaries\DotNet\BitMono.Obfuscation.TestCases.Reflection\BitMono.Obfuscation.TestCases.Reflection.csproj", "{9C944CC7-1C0D-45EC-900B-A7EEB419288F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitMono.Obfuscation.TestCases.LocalVariableEncoding", "test\TestBinaries\DotNet\BitMono.Obfuscation.TestCases.LocalVariableEncoding\BitMono.Obfuscation.TestCases.LocalVariableEncoding.csproj", "{A2E35691-0D22-4BE3-9118-F9B468450457}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -399,6 +401,18 @@ Global
 		{9C944CC7-1C0D-45EC-900B-A7EEB419288F}.Release|x64.Build.0 = Release|Any CPU
 		{9C944CC7-1C0D-45EC-900B-A7EEB419288F}.Release|x86.ActiveCfg = Release|Any CPU
 		{9C944CC7-1C0D-45EC-900B-A7EEB419288F}.Release|x86.Build.0 = Release|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Debug|x64.Build.0 = Debug|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Debug|x86.Build.0 = Debug|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Release|x64.ActiveCfg = Release|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Release|x64.Build.0 = Release|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Release|x86.ActiveCfg = Release|Any CPU
+		{A2E35691-0D22-4BE3-9118-F9B468450457}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -432,6 +446,7 @@ Global
 		{504FDAFC-B28B-4D14-A9C6-D933563BF844} = {D87066C4-1144-4BD8-96E9-9F4676001397}
 		{E49F4025-F636-4D96-8707-4FC764844475} = {1EF50257-AFD3-48A3-9E22-03BDC25550A7}
 		{9C944CC7-1C0D-45EC-900B-A7EEB419288F} = {A431DCB4-6EF9-4BEF-8902-FA704D62624E}
+		{A2E35691-0D22-4BE3-9118-F9B468450457} = {A431DCB4-6EF9-4BEF-8902-FA704D62624E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7DA0BB43-C1D4-4688-BE43-A9ED2D6F78EE}
