@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aae8549e342398bc7ba463d05cfeeba1, type: 3}
+  m_Name: BitMonoConfig
+  m_EditorClassIdentifier: BitMono.Unity.Editor::BitMono.Unity.Editor.BitMonoConfig
+  EnableObfuscation: 1
+  ConfigPath: 
+  UseUnityUIForProtections: 1
+  ProtectionSettings:
+  - Name: AntiILdasm
+    Enabled: 1
+  - Name: AntiDe4dot
+    Enabled: 0
+  - Name: ObjectReturnType
+    Enabled: 0
+  - Name: NoNamespaces
+    Enabled: 0
+  - Name: FullRenamer
+    Enabled: 0
+  - Name: AntiDebugBreakpoints
+    Enabled: 0
+  - Name: BillionNops
+    Enabled: 0
+  - Name: StringsEncryption
+    Enabled: 0
+  - Name: UnmanagedString
+    Enabled: 0
+  - Name: DotNetHook
+    Enabled: 0
+  - Name: CallToCalli
+    Enabled: 0
+  - Name: AntiDecompiler
+    Enabled: 0
+  - Name: BitMethodDotnet
+    Enabled: 0
+  - Name: BitDecompiler
+    Enabled: 0
+  - Name: BitTimeDateStamp
+    Enabled: 0
+  - Name: BitDotNet
+    Enabled: 0
+  - Name: BitMono
+    Enabled: 0
+  ObfuscationTimeoutMinutes: 1
+  EnableDebugLogging: 1

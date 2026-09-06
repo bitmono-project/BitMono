@@ -1,0 +1,1111 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Echo.DataFlow</name>
+    </assembly>
+    <members>
+        <member name="T:Echo.DataFlow.Analysis.CyclicDependencyException">
+            <summary>
+            Represents the exception that occurs when a cyclic dependency was detected in a data flow graph.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Analysis.CyclicDependencyException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Echo.DataFlow.Analysis.CyclicDependencyException"/> class.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Analysis.CyclicDependencyException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Echo.DataFlow.Analysis.CyclicDependencyException"/> class, with the specified message.
+            </summary>
+            <param name="message">The error message.</param>
+        </member>
+        <member name="M:Echo.DataFlow.Analysis.CyclicDependencyException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Echo.DataFlow.Analysis.CyclicDependencyException"/> class, with the specified message
+            and inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">The error message.</param>
+            <param name="innerException">The inner exception that was the cause of this exception.</param>
+        </member>
+        <member name="T:Echo.DataFlow.Analysis.DependencyCollection">
+            <summary>
+            Provides members for collecting data dependencies in a data flow graph.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Analysis.DependencyCollection.GetOrderedDependencies``1(Echo.DataFlow.DataFlowNode{``0})">
+            <summary>
+            Collects all dependency nodes recursively, and sorts them in a topological order such that the final collection
+            of nodes can be executed sequentially.
+            </summary>
+            <param name="node">The node to find all dependencies for.</param>
+            <typeparam name="T">The type of contents that each node contains.</typeparam>
+            <returns>The topological ordering of all dependencies of the node.</returns>
+            <exception cref="T:Echo.DataFlow.Analysis.CyclicDependencyException">Occurs when there is a cyclic dependency in the graph.</exception>
+        </member>
+        <member name="M:Echo.DataFlow.Analysis.DependencyCollection.GetOrderedDependencies``1(Echo.DataFlow.DataFlowNode{``0},Echo.DataFlow.Analysis.DependencyCollectionFlags)">
+            <summary>
+            Collects all dependency nodes recursively, and sorts them in a topological order such that the final collection
+            of nodes can be executed sequentially.
+            </summary>
+            <param name="node">The node to find all dependencies for.</param>
+            <param name="flags">Flags that influence the behaviour of the algorithm.</param>
+            <typeparam name="T">The type of contents that each node contains.</typeparam>
+            <returns>The topological ordering of all dependencies of the node.</returns>
+            <exception cref="T:Echo.DataFlow.Analysis.CyclicDependencyException">Occurs when there is a cyclic dependency in the graph.</exception>
+        </member>
+        <member name="T:Echo.DataFlow.Analysis.DependencyCollectionFlags">
+            <summary>
+            Provides flags that influence the behaviour of the <see cref="T:Echo.DataFlow.Analysis.DependencyCollection"/> class.
+            </summary>
+        </member>
+        <member name="F:Echo.DataFlow.Analysis.DependencyCollectionFlags.IncludeStackDependencies">
+            <summary>
+            Indicates stack dependency edges should be traversed during the collection.
+            </summary>
+        </member>
+        <member name="F:Echo.DataFlow.Analysis.DependencyCollectionFlags.IncludeVariableDependencies">
+            <summary>
+            Indicates variable dependency edges should be traversed during the collection.
+            </summary>
+        </member>
+        <member name="F:Echo.DataFlow.Analysis.DependencyCollectionFlags.IncludeAllDependencies">
+            <summary>
+            Indicates all edges should be traversed during the collection.
+            </summary>
+        </member>
+        <member name="T:Echo.DataFlow.Collections.DataFlowNodeCollection`1">
+            <summary>
+            Represents a mutable collection of nodes present in a data flow graph.
+            </summary>
+            <typeparam name="TContents">The type of data that is stored in each node.</typeparam>
+        </member>
+        <member name="P:Echo.DataFlow.Collections.DataFlowNodeCollection`1.Count">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.Collections.DataFlowNodeCollection`1.IsReadOnly">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.Collections.DataFlowNodeCollection`1.Item(System.Int64)">
+            <summary>
+            Gets a node by its identifier.
+            </summary>
+            <param name="id">The node identifier.</param>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.DataFlowNodeCollection`1.Add(System.Int64,`0)">
+            <summary>
+            Creates and adds a new node to the collection of data flow nodes.
+            </summary>
+            <param name="id">The unique identifier of the node.</param>
+            <param name="contents">The contents of the node.</param>
+            <returns>The created node.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.DataFlowNodeCollection`1.Add(Echo.DataFlow.DataFlowNode{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.DataFlowNodeCollection`1.AddRange(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataFlowNode{`0}})">
+            <summary>
+            Adds a collection of nodes to the graph.
+            </summary>
+            <param name="items">The nodes to add.</param>
+            <exception cref="T:System.ArgumentException">
+            Occurs when at least one node in the provided collection is already added to another graph.
+            </exception>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.DataFlowNodeCollection`1.Clear">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.DataFlowNodeCollection`1.Contains(System.Int64)">
+            <summary>
+            Determines whether a node with a specific offset was added to the collection.
+            </summary>
+            <param name="offset">The offset to the node.</param>
+            <returns><c>true</c> if there exists a node with the provided offset, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.DataFlowNodeCollection`1.Contains(Echo.DataFlow.DataFlowNode{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.DataFlowNodeCollection`1.CopyTo(Echo.DataFlow.DataFlowNode{`0}[],System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.DataFlowNodeCollection`1.Remove(System.Int64)">
+            <summary>
+            Removes a node by its offset.
+            </summary>
+            <param name="offset">The offset. of the node to remove.</param>
+            <returns><c>true</c> if the collection contained a node with the provided offset., and the node was removed
+            successfully, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.DataFlowNodeCollection`1.UpdateIndices">
+            <summary>
+            Synchronizes all offsets of each node with the underlying instructions.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">Occurs when one or more nodes are in a state that new offsets
+            cannot be determined. This includes duplicated offsets.</exception>
+            <remarks>
+            <para>
+            Because updating offsets is a relatively expensive task, calls to this method should be delayed as much as
+            possible.
+            </para>
+            <para>
+            This method will invalidate any enumerators that are enumerating this collection of nodes.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.DataFlowNodeCollection`1.Remove(Echo.DataFlow.DataFlowNode{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.DataFlowNodeCollection`1.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.DataFlow.Collections.StackDependencyCollection`1">
+            <summary>
+            Represents a collection of dependencies allocated on a stack for a node in a data flow graph.
+            </summary>
+            <typeparam name="TContents">The type of contents to put in each node.</typeparam>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.StackDependencyCollection`1.#ctor(Echo.DataFlow.DataFlowNode{`0})">
+            <summary>
+            Creates a new dependency collection for a node.
+            </summary>
+            <param name="owner">The owner node.</param>
+        </member>
+        <member name="P:Echo.DataFlow.Collections.StackDependencyCollection`1.EdgeCount">
+            <summary>
+            Gets the total number of edges that are stored in this dependency collection.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.StackDependencyCollection`1.SetCount(System.Int32)">
+            <summary>
+            Ensures the node has the provided amount of stack dependencies.
+            </summary>
+            <param name="count">The new amount of dependencies.</param>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.StackDependencyCollection`1.InsertItem(System.Int32,Echo.DataFlow.StackDependency{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.StackDependencyCollection`1.SetItem(System.Int32,Echo.DataFlow.StackDependency{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.StackDependencyCollection`1.RemoveItem(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.StackDependencyCollection`1.ClearItems">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.StackDependencyCollection`1.GetEnumerator">
+            <summary>
+            Gets the enumerator for this stack dependency collection.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Echo.DataFlow.Collections.StackDependencyCollection`1.Enumerator">
+            <summary>
+            Represents an enumerator for a stack dependency collection.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.StackDependencyCollection`1.Enumerator.#ctor(Echo.DataFlow.Collections.StackDependencyCollection{`0})">
+            <summary>
+            Creates a new instance of the <see cref="T:Echo.DataFlow.Collections.StackDependencyCollection`1.Enumerator"/> structure.
+            </summary>
+            <param name="collection">The collection to enumerate.</param>
+        </member>
+        <member name="P:Echo.DataFlow.Collections.StackDependencyCollection`1.Enumerator.Current">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.StackDependencyCollection`1.Enumerator.MoveNext">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.StackDependencyCollection`1.Enumerator.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.StackDependencyCollection`1.Enumerator.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.DataFlow.Collections.VariableDependencyCollection`1">
+            <summary>
+            Represents a collection of variables and their symbolic values that a node in a data flow graph depends on.
+            </summary>
+            <typeparam name="TContents">The type of contents to put in each node.</typeparam>
+        </member>
+        <member name="P:Echo.DataFlow.Collections.VariableDependencyCollection`1.Item(Echo.Code.IVariable)">
+            <summary>
+            Gets or sets the variable dependency assigned to the variable.
+            </summary>
+            <param name="variable">The variable</param>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.Remove(Echo.DataFlow.VariableDependency{`0})">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.Collections.VariableDependencyCollection`1.Count">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.Collections.VariableDependencyCollection`1.EdgeCount">
+            <summary>
+            Gets the total number of edges that are stored in this dependency collection.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.Collections.VariableDependencyCollection`1.IsReadOnly">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.TryGetDependency(Echo.Code.IVariable,Echo.DataFlow.VariableDependency{`0}@)">
+            <summary>
+            Attempts to get the dependency assigned to the provided variable.
+            </summary>
+            <param name="variable">The variable.</param>
+            <param name="dependency">When this function returns <c>true</c>, contains the dependency.</param>
+            <returns><c>true</c> if the variable was registered as a dependency, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.Add(Echo.DataFlow.VariableDependency{`0})">
+            <summary>
+            Adds a variable dependency to the node.
+            </summary>
+            <param name="dependency">The dependency to add.</param>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.Clear">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.Contains(Echo.DataFlow.VariableDependency{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.ContainsVariable(Echo.Code.IVariable)">
+            <summary>
+            Determines whether the provided variable is registered as a dependency.
+            </summary>
+            <param name="variable">The dependency.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.CopyTo(Echo.DataFlow.VariableDependency{`0}[],System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.Remove(Echo.Code.IVariable)">
+            <summary>
+            Unregisters a variable as a dependency. 
+            </summary>
+            <param name="variable">The variable to unregister.</param>
+            <returns><c>true</c> if the variable was registered before and is now unregistered, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.GetRegisteredVariables">
+            <summary>
+            Obtains a collection of variables that are registered in the dependency. 
+            </summary>
+            <returns>The variables.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.GetEnumerator">
+            <summary>
+            Obtains an enumerator that enumerates all recorded variable dependencies in this collection. 
+            </summary>
+            <returns>The enumerator.</returns>
+        </member>
+        <member name="T:Echo.DataFlow.Collections.VariableDependencyCollection`1.Enumerator">
+            <summary>
+            Represents an enumerator that enumerates all entries in a variable dependencies collection.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.Enumerator.#ctor(Echo.DataFlow.Collections.VariableDependencyCollection{`0})">
+            <summary>
+            Creates a new instance of the <see cref="T:Echo.DataFlow.Collections.VariableDependencyCollection`1.Enumerator"/> class.
+            </summary>
+            <param name="collection">The collection to enumerate.</param>
+        </member>
+        <member name="P:Echo.DataFlow.Collections.VariableDependencyCollection`1.Enumerator.Current">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.Collections.VariableDependencyCollection`1.Enumerator.System#Collections#IEnumerator#Current">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.Enumerator.MoveNext">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.Enumerator.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Collections.VariableDependencyCollection`1.Enumerator.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.DataFlow.DataDependency`2">
+            <summary>
+            Provides a base for data dependencies of a node in a data flow graph, which is a set of one or more data flow
+            nodes where the owner node might pull data from.
+            </summary>
+            <typeparam name="TSource">The type of data source that this dependency uses.</typeparam>
+            <typeparam name="TContents">The type of contents to put in a data flow node.</typeparam>
+        </member>
+        <member name="P:Echo.DataFlow.DataDependency`2.Count">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.DataDependency`2.IsReadOnly">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.DataDependency`2.HasKnownDataSources">
+            <summary>
+            Gets a value indicating whether the data dependency has any known data sources. 
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.DataDependency`2.Dependent">
+            <summary>
+            Gets the node that owns the dependency.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.Add(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.ExceptWith(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.IntersectWith(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.IsProperSubsetOf(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.IsProperSupersetOf(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.IsSubsetOf(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.IsSupersetOf(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.Overlaps(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.SetEquals(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.SymmetricExceptWith(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.UnionWith(System.Collections.Generic.IEnumerable{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.System#Collections#Generic#ICollection{TSource}#Add(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.Clear">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.Contains(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.CopyTo(`0[],System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.Remove(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.Remove(Echo.DataFlow.DataFlowNode{`1})">
+            <summary>
+            Removes all data sources that are incident with the provided node.
+            </summary>
+            <param name="node">The node.</param>
+            <returns><c>true</c> if at least one edge was removed, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.System#Collections#IEnumerable#GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.GetEdges">
+            <summary>
+            Gets a collection of data flow edges that encode the stored data sources.
+            </summary>
+            <returns>The edges.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.DataDependency`2.GetNodes">
+            <summary>
+            Gets a collection of nodes that are possible data sources for the dependency.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Echo.DataFlow.DataDependencyType">
+            <summary>
+            Provides members for describing types of dependencies between nodes in a data flow graph.
+            </summary>
+        </member>
+        <member name="F:Echo.DataFlow.DataDependencyType.Stack">
+            <summary>
+            Indicates the dependency is a stack dependency.
+            </summary>
+        </member>
+        <member name="F:Echo.DataFlow.DataDependencyType.Variable">
+            <summary>
+            Indicates the dependency is a variable dependency.
+            </summary>
+        </member>
+        <member name="T:Echo.DataFlow.DataFlowEdge`1">
+            <summary>
+            Represents an edge between two nodes in a data flow graph (DFG). The origin of the node represents the dependant,
+            and the target of the node represents the dependency.
+            </summary>
+            <typeparam name="TContents">The type of information to store in each data flow node.</typeparam>
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowEdge`1.#ctor(Echo.DataFlow.DataFlowNode{`0},Echo.DataFlow.DataSource{`0})">
+            <summary>
+            Creates a new dependency edge between two nodes.
+            </summary>
+            <param name="dependent">The dependent node.</param>
+            <param name="target">The dependency node.</param>
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowEdge`1.Dependent">
+            <summary>
+            Gets node that depends on the data source. 
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowEdge`1.DataSource">
+            <summary>
+            Gets the data source this data flow edge points to.
+            </summary>
+        </member>
+        <member name="T:Echo.DataFlow.DataFlowGraph`1">
+            <summary>
+            Represents a graph that encodes data dependencies between objects. An edge (A, B) indicates node A depends on
+            the evaluation of node B.
+            </summary>
+            <typeparam name="TContents">The type of contents to store for each node.</typeparam>
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowGraph`1.#ctor(Echo.Code.IArchitecture{`0})">
+            <summary>
+            Creates a new data flow graph.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowGraph`1.Architecture">
+            <summary>
+            Gets the architecture of the instructions that are stored in the data flow graph.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowGraph`1.Nodes">
+            <summary>
+            Gets a collection of nodes that are present in the graph.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowGraph`1.Echo#Graphing#ISubGraph#GetNodes">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowGraph`1.Echo#Graphing#ISubGraph#GetSubGraphs">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowGraph`1.GetEdges">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowGraph`1.ToDotGraph(System.IO.TextWriter)">
+            <summary>
+            Serializes the data flow graph to the provided output text writer using the dot file format.
+            </summary>
+            <param name="writer">The output stream.</param>
+            <remarks>
+            To customize the look of the resulting dot file graph, use the <see cref="T:Echo.Graphing.Serialization.Dot.DotWriter"/> class
+            instead of this function.
+            </remarks>
+        </member>
+        <member name="T:Echo.DataFlow.DataFlowNode`1">
+            <summary>
+            Represents a single node in a data flow graph.
+            </summary>
+            <typeparam name="TContents">The type of contents to store in the node.</typeparam>
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowNode`1.#ctor(System.Int64,`0)">
+            <summary>
+            Creates a new data flow graph node.
+            </summary>
+            <param name="id">A unique identifier for the node that can be used for indexing the node.</param>
+            <param name="contents">The contents of the node.</param>
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowNode`1.ParentGraph">
+            <summary>
+            Gets the data flow graph this node is a part of.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowNode`1.Id">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowNode`1.InDegree">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowNode`1.OutDegree">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowNode`1.IsExternal">
+            <summary>
+            Gets a value indicating whether the data flow node represents an external data source.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowNode`1.Contents">
+            <summary>
+            Gets the contents of the node.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowNode`1.StackDependencies">
+            <summary>
+            Gets a collection of values allocated on a stack that this node depends on.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.DataFlowNode`1.VariableDependencies">
+            <summary>
+            Gets a collection of values that are assigned to variables that this node depends on.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowNode`1.GetIncomingEdges">
+            <summary>
+            Obtains a collection of edges that refer to dependent nodes.
+            </summary>
+            <returns>The edges.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowNode`1.GetOutgoingEdges">
+            <summary>
+            Obtains a collection of edges encoding all the dependencies that this node has.
+            </summary>
+            <returns>The edges.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowNode`1.GetDependants">
+            <summary>
+            Obtains a collection of nodes that depend on this node.
+            </summary>
+            <returns>The dependant nodes.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowNode`1.Disconnect">
+            <summary>
+            Removes all incident edges (both incoming and outgoing edges) from the node, effectively isolating the node
+            in the graph. 
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.DataFlowNode`1.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.DataFlow.DataSource`1">
+            <summary>
+            Represents a data source in a data flow graph.
+            </summary>
+            <typeparam name="TContents">The type of data stored in each data flow node.</typeparam>
+        </member>
+        <member name="M:Echo.DataFlow.DataSource`1.#ctor(Echo.DataFlow.DataFlowNode{`0})">
+            <summary>
+            Creates a new data source.
+            </summary>
+            <param name="node">The node producing the data.</param>
+        </member>
+        <member name="P:Echo.DataFlow.DataSource`1.Node">
+            <summary>
+            Gets the data flow node that produced the data.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.DataSource`1.Type">
+            <summary>
+            Gets the type of data dependency that this data source encodes.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.DataSource`1.Equals(Echo.DataFlow.DataSource{`0})">
+            <summary>
+            Determines whether the data sources are considered equal.
+            </summary>
+            <param name="other">The other data source.</param>
+        </member>
+        <member name="M:Echo.DataFlow.DataSource`1.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataSource`1.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.DataSource`1.op_Equality(Echo.DataFlow.DataSource{`0},Echo.DataFlow.DataSource{`0})">
+            <summary>
+            Determines whether the data sources are considered equal.
+            </summary>
+            <param name="a">The first data source.</param>
+            <param name="b">The second data source.</param>
+            <returns><c>true</c> if they are considered equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.DataSource`1.op_Inequality(Echo.DataFlow.DataSource{`0},Echo.DataFlow.DataSource{`0})">
+            <summary>
+            Determines whether the data sources are not considered equal.
+            </summary>
+            <param name="a">The first data source.</param>
+            <param name="b">The second data source.</param>
+            <returns><c>true</c> if they are not considered equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="T:Echo.DataFlow.Emulation.StackImbalanceException">
+            <summary>
+            The exception that is thrown when an inconsistency in the size of the stack was detected. Typically this
+            exception occurs when two or more converging control flow paths have inconsistent stack sizes, or when
+            either an insufficient or excessive amount of values were pushed onto the stack.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.StackImbalanceException.#ctor">
+            <summary>
+            Creates a new stack imbalance exception.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.StackImbalanceException.#ctor(System.Int64)">
+            <summary>
+            Creates a new stack imbalance exception.
+            </summary>
+            <param name="offset">The offset where the stack inconsistency was detected.</param>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.StackImbalanceException.#ctor(System.String)">
+            <summary>
+            Creates a new stack imbalance exception.
+            </summary>
+            <param name="message">The message of the error that occured.</param>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.StackImbalanceException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new stack imbalance exception.
+            </summary>
+            <param name="message">The message of the error that occured.</param>
+            <param name="innerException">The inner cause of the exception.</param>
+        </member>
+        <member name="P:Echo.DataFlow.Emulation.StackImbalanceException.Offset">
+            <summary>
+            Gets the offset where the stack inconsistency was detected.
+            </summary>
+        </member>
+        <member name="T:Echo.DataFlow.Emulation.SymbolicProgramState`1">
+            <summary>
+            Represents an immutable snapshot of a program state that is fully symbolic.  
+            </summary>
+            <typeparam name="T">The type of instructions.</typeparam>
+        </member>
+        <member name="P:Echo.DataFlow.Emulation.SymbolicProgramState`1.Empty">
+            <summary>
+            Gets an empty program state.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicProgramState`1.#ctor(System.Int64)">
+            <summary>
+            Creates a new empty program state, initialized at the provided program counter.
+            </summary>
+            <param name="programCounter">The initial program counter.</param>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicProgramState`1.#ctor(System.Int64,System.Collections.Immutable.ImmutableStack{Echo.DataFlow.Emulation.SymbolicValue{`0}})">
+            <summary>
+            Creates a new empty program state, initialized at the provided program counter.
+            </summary>
+            <param name="programCounter">The initial program counter.</param>
+            <param name="stack">The initial stack state.</param>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicProgramState`1.#ctor(System.Int64,System.Collections.Immutable.ImmutableDictionary{Echo.Code.IVariable,Echo.DataFlow.Emulation.SymbolicValue{`0}})">
+            <summary>
+            Creates a new empty program state, initialized at the provided program counter.
+            </summary>
+            <param name="programCounter">The initial program counter.</param>
+            <param name="variables">The initial state of the variables.</param>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicProgramState`1.#ctor(System.Int64,System.Collections.Immutable.ImmutableStack{Echo.DataFlow.Emulation.SymbolicValue{`0}},System.Collections.Immutable.ImmutableDictionary{Echo.Code.IVariable,Echo.DataFlow.Emulation.SymbolicValue{`0}})">
+            <summary>
+            Creates a new empty program state, initialized at the provided program counter.
+            </summary>
+            <param name="programCounter">The initial program counter.</param>
+            <param name="stack">The initial stack state.</param>
+            <param name="variables">The initial state of the variables.</param>
+        </member>
+        <member name="P:Echo.DataFlow.Emulation.SymbolicProgramState`1.ProgramCounter">
+            <summary>
+            Gets the current value of the program counter that points to the instruction to be executed next.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.Emulation.SymbolicProgramState`1.Stack">
+            <summary>
+            Gets the current stack state of the program.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.Emulation.SymbolicProgramState`1.Variables">
+            <summary>
+            Gets the current variable state of the program.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicProgramState`1.WithProgramCounter(System.Int64)">
+            <summary>
+            Copies the current state and moves the program counter of the copy to the provided address.
+            </summary>
+            <param name="programCounter">The new program counter.</param>
+            <returns>The new program state.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicProgramState`1.WithStack(System.Collections.Immutable.ImmutableStack{Echo.DataFlow.Emulation.SymbolicValue{`0}})">
+            <summary>
+            Copies the current state and replaces the stack state with a new one.
+            </summary>
+            <param name="stack">The new stack state.</param>
+            <returns>The new program state.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicProgramState`1.WithVariables(System.Collections.Immutable.ImmutableDictionary{Echo.Code.IVariable,Echo.DataFlow.Emulation.SymbolicValue{`0}})">
+            <summary>
+            Copies the current state and replaces the variables state with a new one.
+            </summary>
+            <param name="variables">The new variables state.</param>
+            <returns>The new program state.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicProgramState`1.Push(Echo.DataFlow.Emulation.SymbolicValue{`0})">
+            <summary>
+            Copies the current state and pushes a new value onto the stack. 
+            </summary>
+            <param name="value">The new value.</param>
+            <returns>The new program state.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicProgramState`1.Pop(Echo.DataFlow.Emulation.SymbolicValue{`0}@)">
+            <summary>
+            Copies the current state and pops the top value from the stack. 
+            </summary>
+            <param name="value">The popped value.</param>
+            <exception cref="T:Echo.DataFlow.Emulation.StackImbalanceException">Occurs when the stack is empty.</exception>
+            <returns>The new program state.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicProgramState`1.MergeStates(Echo.DataFlow.Emulation.SymbolicProgramState{`0}@,Echo.DataFlow.Emulation.SymbolicProgramState{`0}@)">
+            <summary>
+            Merges two program states together, combining all data sources.
+            </summary>
+            <param name="otherState">The other program state to merge with.</param>
+            <param name="newState">The newly created state.</param>
+            <returns><c>true</c> if the state has changed, <c>false</c> otherwise.</returns>
+            <exception cref="T:System.ArgumentException">Occurs when the program counters do not match.</exception>
+            <exception cref="T:Echo.DataFlow.Emulation.StackImbalanceException">Occurs when the stack heights do not match.</exception>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicProgramState`1.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.DataFlow.Emulation.SymbolicValue`1">
+            <summary>
+            Represents a symbolic value that resides in memory. 
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.#ctor">
+            <summary>
+            Creates a new symbolic value with no data sources.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.#ctor(Echo.DataFlow.DataSource{`0})">
+            <summary>
+            Creates a new symbolic value with a single data source.
+            </summary>
+            <param name="dataSource">The data source of the symbolic value.</param>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.#ctor(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataSource{`0}})">
+            <summary>
+            Creates a new symbolic value with the provided data sources.
+            </summary>
+            <param name="dataSources">The data sources of the symbolic value.</param>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.#ctor(Echo.DataFlow.Emulation.SymbolicValue{`0},Echo.DataFlow.Emulation.SymbolicValue{`0})">
+            <summary>
+            Merges two data dependencies into one symbolic value.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.Emulation.SymbolicValue`1.Count">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.Emulation.SymbolicValue`1.IsReadOnly">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.DataFlow.Emulation.SymbolicValue`1.HasKnownDataSources">
+            <summary>
+            Gets a value indicating whether the data dependency has any known data sources. 
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.CreateStackValue(Echo.DataFlow.DataFlowNode{`0})">
+            <summary>
+            Creates a new symbolic value referencing the first stack value produced by the provided node. 
+            </summary>
+            <param name="node">The node producing the value.</param>
+            <returns>The symbolic value.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.CreateStackValue(Echo.DataFlow.DataFlowNode{`0},System.Int32)">
+            <summary>
+            Creates a new symbolic value referencing a stack value produced by the provided node. 
+            </summary>
+            <param name="node">The node producing the value.</param>
+            <param name="slotIndex">The index of the stack value that was produced by the node.</param>
+            <returns>The symbolic value.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.CreateVariableValue(Echo.DataFlow.DataFlowNode{`0},Echo.Code.IVariable)">
+            <summary>
+            Creates a new symbolic value referencing a variable value assigned by the provided node. 
+            </summary>
+            <param name="node">The node assigning the value.</param>
+            <param name="variable">The variable that was assigned a value.</param>
+            <returns>The symbolic value.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.AsStackValue">
+            <summary>
+            Interprets the symbolic value as a collection of stack data sources.
+            </summary>
+            <returns>The stack data sources.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.AsVariableValue">
+            <summary>
+            Interprets the symbolic value as a collection of variable data sources.
+            </summary>
+            <returns>The variable data sources.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.Add(Echo.DataFlow.DataSource{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.ExceptWith(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataSource{`0}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.IntersectWith(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataSource{`0}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.IsProperSubsetOf(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataSource{`0}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.IsProperSupersetOf(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataSource{`0}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.IsSubsetOf(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataSource{`0}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.IsSupersetOf(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataSource{`0}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.Overlaps(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataSource{`0}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.SetEquals(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataSource{`0}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.SymmetricExceptWith(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataSource{`0}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.UnionWith(System.Collections.Generic.IEnumerable{Echo.DataFlow.DataSource{`0}})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.Clear">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.Contains(Echo.DataFlow.DataSource{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.CopyTo(Echo.DataFlow.DataSource{`0}[],System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.Remove(Echo.DataFlow.DataFlowNode{`0})">
+            <summary>
+            Removes all data sources that are related to the specified node.
+            </summary>
+            <param name="node">The node to remove all data sources from.</param>
+            <returns><c>true</c> if any data source was removed, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.Remove(Echo.DataFlow.DataSource{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.GetNodes">
+            <summary>
+            Gets a collection of nodes that were referenced by all data sources in this data dependency.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates over all data sources the data dependency defines.
+            </summary>
+            <returns>The enumerator.</returns>
+        </member>
+        <member name="T:Echo.DataFlow.Emulation.SymbolicValue`1.Enumerator">
+            <summary>
+            Provides a mechanism for enumerating all data sources within a single symbolic value. 
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.Enumerator.#ctor(Echo.DataFlow.Emulation.SymbolicValue{`0})">
+            <summary>
+            Creates a new instance of the <see cref="T:Echo.DataFlow.Emulation.SymbolicValue`1.Enumerator"/> structure.
+            </summary>
+            <param name="collection">The data dependency to enumerate the data sources for.</param>
+        </member>
+        <member name="P:Echo.DataFlow.Emulation.SymbolicValue`1.Enumerator.Current">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.Enumerator.MoveNext">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.Enumerator.Reset">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.Emulation.SymbolicValue`1.Enumerator.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.DataFlow.ExternalDataSourceNode`1">
+            <summary>
+            Represents an external data source in a data flow graph. 
+            </summary>
+            <typeparam name="TContents">The type of contents to store in the node.</typeparam>
+        </member>
+        <member name="M:Echo.DataFlow.ExternalDataSourceNode`1.#ctor(System.Int64,System.String)">
+            <summary>
+            Creates a new external data source.
+            </summary>
+            <param name="id">The unique identifier of the data source. This should be a negative number.</param>
+            <param name="name">The display name of the external data source.</param>
+        </member>
+        <member name="M:Echo.DataFlow.ExternalDataSourceNode`1.#ctor(System.Int64,System.String,`0)">
+            <summary>
+            Creates a new external data source.
+            </summary>
+            <param name="id">The unique identifier of the data source. This should be a negative number.</param>
+            <param name="name">The display name of the external data source.</param>
+            <param name="contents">The contents of the data flow node.</param>
+        </member>
+        <member name="P:Echo.DataFlow.ExternalDataSourceNode`1.Name">
+            <summary>
+            Gets the name of the auxiliary data flow node.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.ExternalDataSourceNode`1.IsExternal">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.ExternalDataSourceNode`1.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.DataFlow.Serialization.Dot.DataFlowEdgeAdorner`1">
+            <summary>
+            Represents an adorner that styles edges in a data flow graph.
+            </summary>
+            <typeparam name="TContents">The type of contents the nodes contain.</typeparam>
+        </member>
+        <member name="P:Echo.DataFlow.Serialization.Dot.DataFlowEdgeAdorner`1.StackDependencyStyle">
+            <summary>
+            Gets or sets the edge style to use for edges representing stack dependencies.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.Serialization.Dot.DataFlowEdgeAdorner`1.IncludeStackEdgeLabels">
+            <summary>
+            Gets or sets a value indicating whether edges representing stack dependencies should be annotated
+            with the stack slot index. 
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.Serialization.Dot.DataFlowEdgeAdorner`1.VariableDependencyStyle">
+            <summary>
+            Gets or sets the edge style to use for edges representing variable dependencies.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.Serialization.Dot.DataFlowEdgeAdorner`1.IncludeVariableEdgeLabels">
+            <summary>
+            Gets or sets a value indicating whether edges representing variable dependencies should be annotated
+            with the variable that was referenced. 
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Serialization.Dot.DataFlowEdgeAdorner`1.GetEdgeAttributes(Echo.Graphing.IEdge,System.Int64,System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.DataFlow.Serialization.Dot.DataFlowNodeAdorner`1">
+            <summary>
+            Represents an adorner that adds the string representation of the embedded instructions to a node in a graph.
+            </summary>
+            <typeparam name="TContents">The type of instructions the nodes contain.</typeparam>
+        </member>
+        <member name="P:Echo.DataFlow.Serialization.Dot.DataFlowNodeAdorner`1.NodeShape">
+            <summary>
+            Gets or sets the shape of the node.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.Serialization.Dot.DataFlowNodeAdorner`1.GetNodeAttributes(Echo.Graphing.INode,System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.DataFlow.StackDataSource`1">
+            <summary>
+            Represents a data source that refers to a stack value produced by a node in a data flow graph.
+            </summary>
+            <typeparam name="TContents">The type of data stored in each data flow node.</typeparam>
+        </member>
+        <member name="M:Echo.DataFlow.StackDataSource`1.#ctor(Echo.DataFlow.DataFlowNode{`0})">
+            <summary>
+            Creates a new stack data source, referencing the first stack value produced by the provided node.
+            </summary>
+            <param name="node">The node producing the value.</param>
+        </member>
+        <member name="M:Echo.DataFlow.StackDataSource`1.#ctor(Echo.DataFlow.DataFlowNode{`0},System.Int32)">
+            <summary>
+            Creates a new stack data source, referencing a stack value produced by the provided node.
+            </summary>
+            <param name="node">The node producing the value.</param>
+            <param name="slotIndex">The index of the stack value that was produced by the node.</param>
+        </member>
+        <member name="P:Echo.DataFlow.StackDataSource`1.SlotIndex">
+            <summary>
+            Gets a value indicating the stack slot index that was pushed by the instruction referenced in <see cref="P:Echo.DataFlow.DataSource`1.Node"/>.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.StackDataSource`1.Type">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.StackDataSource`1.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.StackDataSource`1.Equals(Echo.DataFlow.DataSource{`0})">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.StackDataSource`1.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.DataFlow.StackDependency`1">
+            <summary>
+            Represents a collection of data sources for a single stack slot dependency of a node.
+            </summary>
+            <typeparam name="TContents">The type of contents to put in a data flow node.</typeparam>
+        </member>
+        <member name="M:Echo.DataFlow.StackDependency`1.Add(Echo.DataFlow.DataFlowNode{`0})">
+            <summary>
+            Adds a data source to the dependency, referencing the first stack value produced by the provided node.
+            </summary>
+            <param name="node">The node producing the value.</param>
+            <returns>The stack data source.</returns>
+        </member>
+        <member name="M:Echo.DataFlow.StackDependency`1.Add(Echo.DataFlow.DataFlowNode{`0},System.Int32)">
+            <summary>
+            Adds a data source to the dependency, referencing a stack value produced by the provided node.
+            </summary>
+            <param name="node">The node producing the value.</param>
+            <param name="slotIndex">The index of the stack value that was produced by the node.</param>
+            <returns>The stack data source.</returns>
+        </member>
+        <member name="T:Echo.DataFlow.VariableDataSource`1">
+            <summary>
+            Represents a data source that refers to a variable value assigned by a node in a data flow graph.
+            </summary>
+            <typeparam name="TContents">The type of data stored in each data flow node.</typeparam>
+        </member>
+        <member name="M:Echo.DataFlow.VariableDataSource`1.#ctor(Echo.DataFlow.DataFlowNode{`0},Echo.Code.IVariable)">
+            <summary>
+            Creates a new variable data source referencing a variable value assigned by the provided node. 
+            </summary>
+            <param name="node">The node assigning the value.</param>
+            <param name="variable">The variable that was assigned a value.</param>
+        </member>
+        <member name="P:Echo.DataFlow.VariableDataSource`1.Variable">
+            <summary>
+            Gets the variable that was referenced by <see cref="P:Echo.DataFlow.DataSource`1.Node"/>.
+            </summary>
+        </member>
+        <member name="P:Echo.DataFlow.VariableDataSource`1.Type">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.DataFlow.VariableDataSource`1.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.DataFlow.VariableDependency`1">
+            <summary>
+            Represents a collection of data sources for a single variable dependency of a node.
+            </summary>
+            <typeparam name="TContents">The type of contents to put in a data flow node.</typeparam>
+        </member>
+        <member name="M:Echo.DataFlow.VariableDependency`1.#ctor(Echo.Code.IVariable)">
+            <summary>
+            Creates a new variable dependency.
+            </summary>
+            <param name="variable">The variable to depend on.</param>
+        </member>
+        <member name="P:Echo.DataFlow.VariableDependency`1.Variable">
+            <summary>
+            Gets the variable that is depended upon.
+            </summary>
+        </member>
+        <member name="M:Echo.DataFlow.VariableDependency`1.Add(Echo.DataFlow.DataFlowNode{`0})">
+            <summary>
+            Adds a data source to the dependency, referencing a variable value assigned by the provided node. 
+            </summary>
+            <param name="node">The node assigning the value.</param>
+            <returns>The variable data source.</returns>
+        </member>
+    </members>
+</doc>

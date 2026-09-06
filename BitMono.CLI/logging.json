@@ -1,0 +1,42 @@
+{
+    "Serilog": {
+        "Using": [
+            "Serilog",
+            "Serilog.Sinks.Console",
+            "Serilog.Sinks.File",
+            "Serilog.Sinks.Async",
+            "Serilog.Enrichers.Sensitive"
+        ],
+        "WriteTo": [
+            {
+                "Name": "Async",
+                "Args": {
+                    "configure": [
+                        {
+                            "Name": "File",
+                            "Args": {
+                                "path": "logs/bitmono-{{date}}.log",
+                                "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}][{SourceContext}] {Message:lj}{NewLine}{Exception}"
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "Enrich": [
+            {
+                "Name": "WithSensitiveDataMasking",
+                "Args": {
+                    "options": {
+                        "MaskValue": "***\\",
+                        "MaskProperties": [ "path", "directory", "file" ],
+                        "MaskingOperators": [ "BitMono.Host.Extensions.PathMaskingOperator, BitMono.Host" ]
+                    }
+                }
+            },
+
+            "FromLogContext"
+        ],
+        "MinimumLevel": "Debug"
+    }
+}
