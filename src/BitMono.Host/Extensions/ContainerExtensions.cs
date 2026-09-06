@@ -20,6 +20,7 @@ namespace BitMono.Host.Extensions;
 public static class BitMonoContainerExtensions
 {
     private const string ProtectionsFileName = "BitMono.Protections.dll";
+    private const string ProtectionsAssemblyName = "BitMono.Protections";
     private const string UnityFileName = "BitMono.Unity.dll";
     private const string DefaultPluginsDirectoryName = "plugins";
     // The plugin SDK contract: any real protection implements IProtection, which lives here, so the
@@ -35,8 +36,17 @@ public static class BitMonoContainerExtensions
     public static Container AddProtections(this Container container, string? file = null)
     {
         var protectionsFilePath = file ?? Path.Combine(AppContext.BaseDirectory, ProtectionsFileName);
-        var rawData = File.ReadAllBytes(protectionsFilePath);
-        Assembly.Load(rawData);
+        if (File.Exists(protectionsFilePath))
+        {
+            Assembly.Load(File.ReadAllBytes(protectionsFilePath));
+        }
+        else
+        {
+            // Single-file (Costura) build, e.g. the net462 CLI bundled in the Unity package: BitMono.Protections
+            // is embedded in the host exe, not a loose DLL on disk, so load it by name and let Costura's
+            // AssemblyResolve hook supply the embedded copy (#302).
+            Assembly.Load(new AssemblyName(ProtectionsAssemblyName));
+        }
 
         var unityFilePath = Path.Combine(AppContext.BaseDirectory, UnityFileName);
         if (File.Exists(unityFilePath))

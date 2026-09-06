@@ -176,39 +176,16 @@ jobs:
         run: |
           mkdir -p test/BitMono.Unity.TestProject/Assets/BitMono.Unity
           cp -R src/BitMono.Unity/* test/BitMono.Unity.TestProject/Assets/BitMono.Unity/
-          # Keep CLI inside Assets but we'll disable import via PluginImporter/meta
+          # BitMono.CLI ships as ONE self-contained net462 exe: Costura embeds every dependency, including the
+          # BitMono.* assemblies, so there are no loose DLLs to drop on export (AssetDatabase.ExportPackage
+          # silently drops assets whose .meta has an invalid GUID) and none to wedge IL2CPP. The .exe imports
+          # as an inert DefaultAsset, so the old per-DLL PluginImporter/meta hack is gone (#302).
           mkdir -p test/BitMono.Unity.TestProject/Assets/BitMono.Unity/BitMono.CLI
-          cp -R src/BitMono.CLI/bin/Release/net462/win-x64/* test/BitMono.Unity.TestProject/Assets/BitMono.Unity/BitMono.CLI/
-          # Copy BitMonoConfig.cs.meta if it exists to preserve GUID for ScriptableObject binding
-          if [ -f src/BitMono.Unity/Editor/BitMonoConfig.cs.meta ]; then
-            cp src/BitMono.Unity/Editor/BitMonoConfig.cs.meta test/BitMono.Unity.TestProject/Assets/BitMono.Unity/Editor/BitMonoConfig.cs.meta
-          fi
-          # Generate .meta files to disable Unity import for all CLI DLLs (prevents load on project open)
-          CLI_DIR="test/BitMono.Unity.TestProject/Assets/BitMono.Unity/BitMono.CLI"
-          if [ -d "$CLI_DIR" ]; then
-            while IFS= read -r -d '' dll; do
-              meta="${dll}.meta"
-              name="$(basename "$dll")"
-              base="${name%.*}"
-              guid="${base}000000000000000000000000000000"
-              printf "%s\n" \
-              "fileFormatVersion: 2" \
-              "guid: ${guid}" \
-              "PluginImporter:" \
-              "  serializedVersion: 2" \
-              "  isPreloaded: 0" \
-              "  isOverridable: 0" \
-              "  platformData:" \
-              "  - first:" \
-              "      Any:" \
-              "    second:" \
-              "      enabled: 0" \
-              "  userData:" \
-              "  assetBundleName:" \
-              "  assetBundleVariant:" \
-              > "$meta"
-            done < <(find "$CLI_DIR" -type f -name "*.dll" -print0)
-          fi
+          CLI_OUT="src/BitMono.CLI/bin/Release/net462/win-x64"
+          CLI_DST="test/BitMono.Unity.TestProject/Assets/BitMono.Unity/BitMono.CLI"
+          cp "$CLI_OUT/BitMono.CLI.exe" "$CLI_DST/"
+          cp "$CLI_OUT/BitMono.CLI.exe.config" "$CLI_DST/" 2>/dev/null || true
+          cp "$CLI_OUT"/*.json "$CLI_DST/" 2>/dev/null || true
       
       - name: Setup Unity for Package Export
         uses: game-ci/unity-builder@v5
@@ -280,8 +257,11 @@ jobs:
           else
             echo "BitMonoConfig.asset not found in src/BitMono.Unity" >&2
           fi
+          # Single self-contained net462 exe - see the export step above (#302).
           mkdir -p unity-package-temp/BitMono.CLI
-          cp -R src/BitMono.CLI/bin/Release/net462/win-x64/* unity-package-temp/BitMono.CLI/
+          cp src/BitMono.CLI/bin/Release/net462/win-x64/BitMono.CLI.exe unity-package-temp/BitMono.CLI/
+          cp src/BitMono.CLI/bin/Release/net462/win-x64/BitMono.CLI.exe.config unity-package-temp/BitMono.CLI/ 2>/dev/null || true
+          cp src/BitMono.CLI/bin/Release/net462/win-x64/*.json unity-package-temp/BitMono.CLI/ 2>/dev/null || true
       
       - name: Update Package Version and Unity Version
         run: |

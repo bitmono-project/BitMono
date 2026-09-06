@@ -94,20 +94,23 @@ namespace BitMono.Editor
                         .ToArray();
 
                     assetsToInclude.AddRange(cliFiles);
-                    var dllCount = cliFiles.Count(f => f.EndsWith(".dll"));
-                    Debug.Log($"Including {cliFiles.Length} files from BitMono.CLI folder ({dllCount} DLLs)");
+                    // BitMono.CLI is a single self-contained net462 exe (Costura embeds every dependency, incl.
+                    // BitMono.*), so this folder ships just the exe plus its config/json - no loose DLLs to be
+                    // dropped from the export by an invalid-GUID .meta, and none to wedge IL2CPP (#302).
+                    var hasExe = cliFiles.Any(f => f.EndsWith("BitMono.CLI.exe"));
+                    Debug.Log($"Including {cliFiles.Length} files from BitMono.CLI folder (BitMono.CLI.exe present: {hasExe})");
+                    if (!hasExe)
+                    {
+                        Debug.LogError("BitMono.CLI.exe not found in the BitMono.CLI folder - the exported package would be unusable. Aborting.");
+                        EditorApplication.Exit(1);
+                        return;
+                    }
 
-                    // Verbose: list individual DLLs for debugging
                     if (_verboseLogging)
                     {
-                        var dllFiles = cliFiles.Where(f => f.EndsWith(".dll")).ToArray();
-                        foreach (var dll in dllFiles.Take(10))
+                        foreach (var file in cliFiles.Take(10))
                         {
-                            Debug.Log($"    - {Path.GetFileName(dll)}");
-                        }
-                        if (dllFiles.Length > 10)
-                        {
-                            Debug.Log($"    ... and {dllFiles.Length - 10} more DLLs");
+                            Debug.Log($"    - {Path.GetFileName(file)}");
                         }
                     }
                 }

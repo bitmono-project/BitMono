@@ -1,8 +1,8 @@
 ﻿<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
   <NullGuard />
-  <Costura>
-    <ExcludeAssemblies>
-      BitMono.*
-    </ExcludeAssemblies>
-  </Costura>
+  <!-- Embed everything, incl. BitMono.*, so the net462 CLI is one self-contained exe. The Unity
+       .unitypackage then ships a single file: AssetDatabase.ExportPackage silently drops loose DLLs whose
+       CI-written .meta carries an invalid GUID, which left the exe unable to load BitMono.Shared (#302).
+       Costura only weaves on net462; the other TFMs ship their DLLs loose as before. -->
+  <Costura />
 </Weavers>

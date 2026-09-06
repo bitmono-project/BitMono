@@ -83,6 +83,10 @@ StyleCopReport.xml
 *_h.h
 *.ilk
 *.meta
+# BitMonoConfig.asset stores its script reference by GUID, so BitMonoConfig.cs must keep a STABLE .meta
+# GUID across builds or the shipped config won't bind to its script in the user's project (#302). Other
+# Unity .meta files stay ignored (Unity regenerates them; nothing references their GUIDs).
+!/src/BitMono.Unity/Editor/BitMonoConfig.cs.meta
 *.obj
 *.iobj
 *.pch
