@@ -188,7 +188,7 @@ jobs:
           cp "$CLI_OUT"/*.json "$CLI_DST/" 2>/dev/null || true
       
       - name: Setup Unity for Package Export
-        uses: game-ci/unity-builder@v5
+        uses: game-ci/unity-builder@v6
         env:
           PACKAGE_VERSION: ${{ steps.cli-build.outputs.version }}
           VERSION: ${{ steps.cli-build.outputs.version }}
