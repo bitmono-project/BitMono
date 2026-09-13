@@ -1,5 +1,6 @@
 name: BitMono.Build
 on:
+  workflow_dispatch:   # manual run: validate Build/Test/UnityPackage on demand (no release is cut)
   create:
     tags:
       - "*"
@@ -123,7 +124,7 @@ jobs:
   UnityPackage:
     runs-on: ubuntu-latest
     timeout-minutes: 30   # old Linux editors can hang on the Bee script-compile; fail fast, don't sit 60min
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'create' && github.event.ref_type == 'tag')
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'create' && github.event.ref_type == 'tag')
     strategy:
       fail-fast: false    # one Unity version failing must NOT cancel the others (was the cascade red)
       max-parallel: 2     # throttle Unity license activation — avoid concurrent-activation flakiness (game-ci #597)
