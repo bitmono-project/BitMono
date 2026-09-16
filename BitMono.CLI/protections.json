@@ -1,0 +1,72 @@
+﻿{
+  "Protections": [
+    {
+      "Name": "AntiILdasm",
+      "Enabled": false
+    },
+    {
+      "Name": "AntiDe4dot",
+      "Enabled": false
+    },
+    {
+      "Name": "ObjectReturnType",
+      "Enabled": false
+    },
+    {
+      "Name": "NoNamespaces",
+      "Enabled": false
+    },
+    {
+      "Name": "FullRenamer",
+      "Enabled": false
+    },
+    {
+      "Name": "AntiDebugBreakpoints",
+      "Enabled": false
+    },
+    {
+      "Name": "BillionNops",
+      "Enabled": false
+    },
+    {
+      "Name": "StringsEncryption",
+      "Enabled": false
+    },
+    {
+      "Name": "UnmanagedString",
+      "Enabled": false
+    },
+    {
+      "Name": "DotNetHook",
+      "Enabled": false
+    },
+    {
+      "Name": "CallToCalli",
+      "Enabled": false
+    },
+    {
+      "Name": "AntiDecompiler",
+      "Enabled": false
+    },
+    {
+      "Name": "BitMethodDotnet",
+      "Enabled": false
+    },
+    {
+      "Name": "BitDecompiler",
+      "Enabled": false
+    },
+    {
+      "Name": "BitTimeDateStamp",
+      "Enabled": false
+    },
+    {
+      "Name": "BitDotNet",
+      "Enabled": false
+    },
+    {
+      "Name": "BitMono",
+      "Enabled": false
+    }
+  ]
+}

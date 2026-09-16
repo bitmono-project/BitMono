@@ -1,0 +1,28 @@
+{
+  "name": "com.bitmono.unity",
+  "version": "0.0.0",
+  "displayName": "BitMono Unity Obfuscator",
+  "description": "Professional obfuscation for Unity projects with Mono2x support. Automatically obfuscates your assemblies during build process while preserving Unity-specific functionality.",
+  "unity": "2019.4",
+  "unityRelease": "0f1",
+  "dependencies": {},
+  "keywords": [
+    "obfuscation",
+    "protection",
+    "security",
+    "mono2x",
+    "build",
+    "assembly",
+    "code-protection",
+    "unity",
+    "mono",
+    "dotnet"
+  ],
+  "author": {
+    "name": "sunnamed434",
+    "email": "sunnamed434@proton.me",
+    "url": "https://github.com/sunnamed434/BitMono"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/sunnamed434/BitMono"
+}

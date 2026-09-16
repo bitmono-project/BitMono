@@ -1,0 +1,2518 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Echo</name>
+    </assembly>
+    <members>
+        <member name="T:Echo.AddressRange">
+            <summary>
+            Represents an address range in memory.
+            </summary>
+        </member>
+        <member name="F:Echo.AddressRange.NilRange">
+            <summary>
+            A range that starts and ends at index 0.
+            </summary>
+        </member>
+        <member name="M:Echo.AddressRange.op_Equality(Echo.AddressRange,Echo.AddressRange)">
+            <summary>
+            Determines whether two address ranges are considered equal.
+            </summary>
+            <param name="a">The first range.</param>
+            <param name="b">The second range.</param>
+            <returns><c>true</c> if the ranges are considered equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.AddressRange.op_Inequality(Echo.AddressRange,Echo.AddressRange)">
+            <summary>
+            Determines whether two address ranges are not considered equal.
+            </summary>
+            <param name="a">The first range.</param>
+            <param name="b">The second range.</param>
+            <returns><c>true</c> if the ranges are not considered equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.AddressRange.#ctor(System.Int64,System.Int64)">
+            <summary>
+            Creates a new address range.
+            </summary>
+            <param name="start">The starting address.</param>
+            <param name="end">The exclusive ending address.</param>
+        </member>
+        <member name="P:Echo.AddressRange.Start">
+            <summary>
+            Gets the address of the first byte in the address range.
+            </summary>
+        </member>
+        <member name="P:Echo.AddressRange.End">
+            <summary>
+            Gets the address where this address range stops. This address is exclusive. 
+            </summary>
+        </member>
+        <member name="P:Echo.AddressRange.Length">
+            <summary>
+            Gets the total length of the address range.
+            </summary>
+        </member>
+        <member name="M:Echo.AddressRange.Contains(System.Int64)">
+            <summary>
+            Determines whether the provided address falls within the address range.
+            </summary>
+            <param name="address">The address.</param>
+            <returns><c>true</c> if the address falls within the range, <c>false otherwise</c>.</returns>
+        </member>
+        <member name="M:Echo.AddressRange.Contains(Echo.AddressRange)">
+            <summary>
+            Determines whether the address range contains the provided sub range.
+            </summary>
+            <param name="range">The address range.</param>
+            <returns><c>true</c> if the sub range falls within the range, <c>false otherwise</c>.</returns>
+        </member>
+        <member name="M:Echo.AddressRange.Expand(System.Int64)">
+            <summary>
+            Expands the address range such that the provided offset is included in the range.
+            </summary>
+            <param name="offset">The offset to include.</param>
+            <returns>The new expanded range.</returns>
+        </member>
+        <member name="M:Echo.AddressRange.Expand(Echo.AddressRange)">
+            <summary>
+            Expands the address range such that the provided address range is included in the total range.
+            </summary>
+            <param name="other">The other address range to include.</param>
+            <returns>The new expanded range.</returns>
+        </member>
+        <member name="M:Echo.AddressRange.Equals(Echo.AddressRange@)">
+            <summary>
+            Determines whether the range is considered equal with the provided range.
+            </summary>
+            <param name="other">The other range.</param>
+            <returns><c>true</c> if the ranges are considered equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.AddressRange.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.AddressRange.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.AddressRange.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Code.IArchitecture`1">
+            <summary>
+            Provides members for describing an instruction set.
+            </summary>
+            <typeparam name="TInstruction">The type of the instruction model this architecture describes.</typeparam>
+        </member>
+        <member name="M:Echo.Code.IArchitecture`1.GetOffset(`0@)">
+            <summary>
+            Gets the offset of an instruction.
+            </summary>
+            <param name="instruction">The instruction to get the offset from.</param>
+            <returns>The offset.</returns>
+        </member>
+        <member name="M:Echo.Code.IArchitecture`1.GetSize(`0@)">
+            <summary>
+            Gets the size in bytes of an instruction.
+            </summary>
+            <param name="instruction">The instruction to measure.</param>
+            <returns>The size.</returns>
+        </member>
+        <member name="M:Echo.Code.IArchitecture`1.GetFlowControl(`0@)">
+            <summary>
+            Gets attributes associated to the flow control behaviour of the provided instruction.
+            </summary>
+            <param name="instruction">The instruction to get the attributes from.</param>
+            <returns>The flow control attributes.</returns>
+        </member>
+        <member name="M:Echo.Code.IArchitecture`1.GetStackPushCount(`0@)">
+            <summary>
+            Gets a value indicating the number of values an instruction pushes on the stack.
+            </summary>
+            <param name="instruction">The instruction to get the stack push count from.</param>
+            <returns>The number of stack slots the instruction pushes.</returns>
+        </member>
+        <member name="M:Echo.Code.IArchitecture`1.GetStackPopCount(`0@)">
+            <summary>
+            Gets a value indicating the number of values an instruction pops from the stack.
+            </summary>
+            <param name="instruction">The instruction to get the stack pop count from.</param>
+            <returns>The number of stack slots the instruction pops.</returns>
+        </member>
+        <member name="M:Echo.Code.IArchitecture`1.GetReadVariablesCount(`0@)">
+            <summary>
+            Gets the number of variables that the provided instruction reads from.
+            </summary>
+            <param name="instruction">The instruction to get the number of read variables from.</param>
+            <returns>The number of variables.</returns>
+        </member>
+        <member name="M:Echo.Code.IArchitecture`1.GetReadVariables(`0@,System.Span{Echo.Code.IVariable})">
+            <summary>
+            Gets a collection of variables that an instruction reads from.
+            </summary>
+            <param name="instruction">The instruction to get the variables from.</param>
+            <param name="variablesBuffer">The output buffer to write the read variables into.</param>
+            <returns>The number of variables that were written into <paramref name="variablesBuffer"/>.</returns>
+        </member>
+        <member name="M:Echo.Code.IArchitecture`1.GetWrittenVariablesCount(`0@)">
+            <summary>
+            Gets the number of variables that the provided instruction writes to.
+            </summary>
+            <param name="instruction">The instruction to get the number of written variables from.</param>
+            <returns>The number of variables.</returns>
+        </member>
+        <member name="M:Echo.Code.IArchitecture`1.GetWrittenVariables(`0@,System.Span{Echo.Code.IVariable})">
+            <summary>
+            Gets a collection of variables that an instruction writes to.
+            </summary>
+            <param name="instruction">The instruction to get the variables from.</param>
+            <param name="variablesBuffer">The output buffer to write the written variables into.</param>
+            <returns>The number of variables that were written into <paramref name="variablesBuffer"/>.</returns>
+        </member>
+        <member name="T:Echo.Code.InstructionFlowControl">
+            <summary>
+            Provides members for describing various flow control properties of an instruction. 
+            </summary>
+        </member>
+        <member name="F:Echo.Code.InstructionFlowControl.Fallthrough">
+            <summary>
+            Indicates the instruction does not have any specific attributes assigned to it.
+            </summary>
+        </member>
+        <member name="F:Echo.Code.InstructionFlowControl.CanBranch">
+            <summary>
+            Indicates the instruction might branch out from the normal control flow to a different instruction. 
+            </summary>
+        </member>
+        <member name="F:Echo.Code.InstructionFlowControl.IsTerminator">
+            <summary>
+            Indicates the instruction terminates the current execution path.
+            </summary>
+        </member>
+        <member name="T:Echo.Code.IPurityClassifier`1">
+            <summary>
+            Provides members for describing the purity of instructions.
+            </summary>
+            <typeparam name="TInstruction">The type of instructions.</typeparam>
+        </member>
+        <member name="M:Echo.Code.IPurityClassifier`1.IsPure(`0@)">
+            <summary>
+            Gets a value indicating whether a particular instruction is considered pure, that is, has no side effects.
+            </summary>
+            <param name="instruction">The instruction to classify.</param>
+            <returns><c>true</c> if the instruction is pure, <c>false</c> if not, and <see cref="F:Echo.Trilean.Unknown"/> if
+            this could not be determined.</returns>
+        </member>
+        <member name="T:Echo.Code.IStaticInstructionProvider`1">
+            <summary>
+            Represents a collection of instructions that can be accessed by their offset.
+            </summary>
+            <typeparam name="TInstruction">The type of instructions that this collection provides.</typeparam>
+        </member>
+        <member name="P:Echo.Code.IStaticInstructionProvider`1.Architecture">
+            <summary>
+            Gets the architecture describing the instructions exposed by this instruction provider.
+            </summary>
+        </member>
+        <member name="M:Echo.Code.IStaticInstructionProvider`1.GetInstructionAtOffset(System.Int64)">
+            <summary>
+            Gets the instruction at the provided address.
+            </summary>
+            <param name="offset">The address of the instruction to get.</param>
+            <returns>The instruction at the provided address.</returns>
+        </member>
+        <member name="T:Echo.Code.IVariable">
+            <summary>
+            Represents a single variable in a virtual machine.
+            </summary>
+        </member>
+        <member name="P:Echo.Code.IVariable.Name">
+            <summary>
+            Gets the name of the variable.
+            </summary>
+        </member>
+        <member name="T:Echo.Code.ListInstructionProvider`1">
+            <summary>
+            Wraps a simple collection of instructions in a basic implementation of an <see cref="T:Echo.Code.IStaticInstructionProvider`1"/>.
+            </summary>
+            <typeparam name="TInstruction">The type of instructions to store.</typeparam>
+        </member>
+        <member name="M:Echo.Code.ListInstructionProvider`1.#ctor(Echo.Code.IArchitecture{`0},System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Creates a new wrapper for a sequence of instructions.
+            </summary>
+            <param name="architecture">The instruction architecture.</param>
+            <param name="instructions">The instructions to put into the wrapper.</param>
+            <exception cref="T:System.ArgumentException">Occurs when there are multiple instructions with the same offset.</exception>
+            <exception cref="T:System.ArgumentNullException">Occurs when the provided instruction sequence is <c>null</c>.</exception>
+        </member>
+        <member name="P:Echo.Code.ListInstructionProvider`1.Architecture">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Code.ListInstructionProvider`1.GetInstructionAtOffset(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Graphing.Analysis.Connectivity.ComponentDetector">
+            <summary>
+            Provides utility members for finding connected components within a graph.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Connectivity.ComponentDetector.FindStronglyConnectedComponents(Echo.Graphing.IGraph)">
+            <summary>
+            Finds all strongly connected components in the provided graph.
+            </summary>
+            <param name="graph">The graph to get the components from.</param>
+            <returns>A collection of sets representing the strongly connected components.</returns>
+        </member>
+        <member name="T:Echo.Graphing.Analysis.CycleDetectedException">
+            <summary>
+            Represents the error that occurs when a cycle was found in a graph that is supposed to be acyclic. 
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.CycleDetectedException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Echo.Graphing.Analysis.CycleDetectedException"/> class.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.CycleDetectedException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Echo.Graphing.Analysis.CycleDetectedException"/> class.
+            </summary>
+            <param name="message">The error message.</param>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.CycleDetectedException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Echo.Graphing.Analysis.CycleDetectedException"/> class.
+            </summary>
+            <param name="message">The error message.</param>
+            <param name="innerException">The inner exception that was the cause of this exception.</param>
+        </member>
+        <member name="T:Echo.Graphing.Analysis.Sorting.TopologicalSorter`1">
+            <summary>
+            Provides a mechanism for sorting nodes in a graph, such that for every edge from node A to node B in the graph we
+            have that node A comes before node B in the final ordering, also known as a topological sorting of the graph.
+            </summary>
+            <typeparam name="TNode">The type of nodes to sort.</typeparam>
+        </member>
+        <member name="T:Echo.Graphing.Analysis.Sorting.TopologicalSorter`1.ChildrenLister">
+            <summary>
+            Represents the method that obtains an ordered list of children of a node in a graph. 
+            </summary>
+            <param name="node">The node to list the children for.</param>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Sorting.TopologicalSorter`1.#ctor(Echo.Graphing.Analysis.Sorting.TopologicalSorter{`0}.ChildrenLister)">
+            <summary>
+            Creates a new instance of the <see cref="T:Echo.Graphing.Analysis.Sorting.TopologicalSorter`1"/> class.
+            </summary>
+            <param name="childrenLister">The method to call when obtaining an ordered list of children of a node.</param>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Sorting.TopologicalSorter`1.#ctor(Echo.Graphing.Analysis.Sorting.TopologicalSorter{`0}.ChildrenLister,System.Boolean)">
+            <summary>
+            Creates a new instance of the <see cref="T:Echo.Graphing.Analysis.Sorting.TopologicalSorter`1"/> class.
+            </summary>
+            <param name="childrenLister">The method to call when obtaining an ordered list of children of a node.</param>
+            <param name="ignoreCycles">Determines whether the algorithm should ignore any back-edges.</param>
+        </member>
+        <member name="P:Echo.Graphing.Analysis.Sorting.TopologicalSorter`1.TopologicalChildrenLister">
+            <summary>
+            Gets the method to call when obtaining an ordered list of children of a node.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Analysis.Sorting.TopologicalSorter`1.IgnoreCycles">
+            <summary>
+            Gets or sets a value indicating whether the algorithm should ignore any back-edges.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Sorting.TopologicalSorter`1.GetTopologicalSorting(`0)">
+            <summary>
+            Obtains the topological sorting of a graph, using the provided node as the root.
+            </summary>
+            <param name="root">The root of the graph.</param>
+            <returns>An ordered list of nodes, such that any node A appears before any other node B if the edge A to B
+            exists in the graph.</returns>
+            <exception cref="T:Echo.Graphing.Analysis.CycleDetectedException">Occurs when there was a cycle detected in the graph, and
+            <see cref="P:Echo.Graphing.Analysis.Sorting.TopologicalSorter`1.IgnoreCycles"/> is set to <c>false</c>.</exception>
+        </member>
+        <member name="T:Echo.Graphing.Analysis.Traversal.DepthFirstTraversal">
+            <summary>
+            Represents a depth-first node traversal of a graph.
+            </summary>
+        </member>
+        <member name="E:Echo.Graphing.Analysis.Traversal.DepthFirstTraversal.NodeDiscovered">
+            <inheritdoc />
+        </member>
+        <member name="E:Echo.Graphing.Analysis.Traversal.DepthFirstTraversal.TraversalCompleted">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.DepthFirstTraversal.#ctor">
+            <summary>
+            Creates a new depth first traversal.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.DepthFirstTraversal.#ctor(System.Boolean)">
+            <summary>
+            Creates a new depth first traversal.
+            </summary>
+            <param name="reverseTraversal">
+            <c>True</c> if the traversal should traverse the graph in a reversed manner.
+            That is, whether the traversal should treat each edge as if it was reversed.
+            </param>
+        </member>
+        <member name="P:Echo.Graphing.Analysis.Traversal.DepthFirstTraversal.ReverseTraversal">
+            <summary>
+            Gets a value indicating the traversal algorithm should traverse either outgoing or incoming edges. 
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.DepthFirstTraversal.Run(Echo.Graphing.INode)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.DepthFirstTraversal.OnNodeDiscovered(Echo.Graphing.Analysis.Traversal.NodeDiscoveryEventArgs)">
+            <summary>
+            Fires and handles the node discovered event.
+            </summary>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.DepthFirstTraversal.OnTraversalCompleted">
+            <summary>
+            Fires and handles the traversal completed event.
+            </summary>
+        </member>
+        <member name="T:Echo.Graphing.Analysis.Traversal.DiscoveryEventArgs">
+            <summary>
+            Provides a base for a discovery event that occurs while traversing a graph.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Analysis.Traversal.DiscoveryEventArgs.ContinueExploring">
+            <summary>
+            Gets or sets a value indicating whether the traversal should continue exploring the current path.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Analysis.Traversal.DiscoveryEventArgs.Abort">
+            <summary>
+            Gets or sets a value indicating whether the traversal should be aborted or not.
+            </summary>
+        </member>
+        <member name="T:Echo.Graphing.Analysis.Traversal.ITraversal">
+            <summary>
+            Provides members for traversing a graph.
+            </summary>
+        </member>
+        <member name="E:Echo.Graphing.Analysis.Traversal.ITraversal.NodeDiscovered">
+            <summary>
+            Fires when a node is about to be traversed by the traversal.
+            </summary>
+        </member>
+        <member name="E:Echo.Graphing.Analysis.Traversal.ITraversal.TraversalCompleted">
+            <summary>
+            Fires when the traversal is completed.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.ITraversal.Run(Echo.Graphing.INode)">
+            <summary>
+            Performs the traversal algorithm.
+            </summary>
+            <param name="entrypoint">The starting node.</param>
+        </member>
+        <member name="T:Echo.Graphing.Analysis.Traversal.NodeDiscoveryEventArgs">
+            <summary>
+            Provides information about a node discovery during a traversal of a graph.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.NodeDiscoveryEventArgs.#ctor(Echo.Graphing.INode,Echo.Graphing.IEdge)">
+            <summary>
+            Creates a new node discovery event.
+            </summary>
+            <param name="newNode">The node that was discovered.</param>
+            <param name="origin">The edge that was traversed to discover the node.</param>
+        </member>
+        <member name="P:Echo.Graphing.Analysis.Traversal.NodeDiscoveryEventArgs.NewNode">
+            <summary>
+            Gets the node that was discovered.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Analysis.Traversal.NodeDiscoveryEventArgs.Origin">
+            <summary>
+            Gets the edge that was traversed that resulted in the node to be discovered.
+            </summary>
+        </member>
+        <member name="T:Echo.Graphing.Analysis.Traversal.ParentRecorder">
+            <summary>
+            Provides a mechanism to record all parent nodes during a traversal.
+            </summary>
+            <remarks>
+            A node is a parent of another node if it is the parent in the search tree. 
+            </remarks>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.ParentRecorder.#ctor(Echo.Graphing.Analysis.Traversal.ITraversal)">
+            <summary>
+            Creates a new parent recorder.
+            </summary>
+            <param name="traversal">The traversal to hook into.</param>
+            <exception cref="T:System.ArgumentNullException">Occurs when the provided traversal is <c>null</c>.</exception>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.ParentRecorder.GetParentEdge(Echo.Graphing.INode)">
+            <summary>
+            Gets the edge that was traversed when discovering the provided node.
+            </summary>
+            <param name="node">The node to get the edge to its parent from.</param>
+            <returns>The edge originating from the parent node, or <c>null</c> if the node was the first node to be discovered.</returns>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.ParentRecorder.GetParent(Echo.Graphing.INode)">
+            <summary>
+            Gets the parent of the provided node in the search tree that was recorded.
+            </summary>
+            <param name="node">The node to get the parent node from.</param>
+            <returns>The parent node in the search tree, or <c>null</c> if the node was the first node to be discovered.</returns>
+        </member>
+        <member name="T:Echo.Graphing.Analysis.Traversal.PostOrderRecorder">
+            <summary>
+            Provides a mechanism for recording a post traversal order.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.PostOrderRecorder.#ctor(Echo.Graphing.Analysis.Traversal.ITraversal)">
+            <summary>
+            Creates a new post traversal order and hooks into the provided traversal object.
+            </summary>
+            <param name="traversal">The traversal object to hook into.</param>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.PostOrderRecorder.GetOrder">
+            <summary>
+            Gets the final post-order of nodes that was recorded.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Echo.Graphing.Analysis.Traversal.TraversalOrderRecorder">
+            <summary>
+            Provides a mechanism to record the order in which each node in the graph was traversed by a traversal algorithm.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.TraversalOrderRecorder.#ctor(Echo.Graphing.Analysis.Traversal.ITraversal)">
+            <summary>
+            Creates a new traversal order recorder and hooks into the provided traversal object.
+            </summary>
+            <param name="traversal">The traversal object to hook into.</param>
+        </member>
+        <member name="P:Echo.Graphing.Analysis.Traversal.TraversalOrderRecorder.TraversedNodes">
+            <summary>
+            Gets a collection of all the nodes that were discovered during the traversal.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.TraversalOrderRecorder.GetIndex(Echo.Graphing.INode)">
+            <summary>
+            Gets the index of the node during the traversal. 
+            </summary>
+            <param name="node">The node to get the index from.</param>
+            <returns>The index.</returns>
+        </member>
+        <member name="M:Echo.Graphing.Analysis.Traversal.TraversalOrderRecorder.GetTraversal">
+            <summary>
+            Gets the full traversal as an ordered list of nodes.
+            </summary>
+            <returns>The traversal.</returns>
+        </member>
+        <member name="T:Echo.Graphing.Edge">
+            <summary>
+            Provides a basic implementation of an edge in a graph.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Edge.#ctor(Echo.Graphing.INode,Echo.Graphing.INode)">
+            <summary>
+            Creates a new edge in a graph.
+            </summary>
+            <param name="origin">The node that this edge starts at in the directed graph.</param>
+            <param name="target">The node that this edge points to in the directed graph.</param>
+        </member>
+        <member name="P:Echo.Graphing.Edge.Origin">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.Graphing.Edge.Target">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.Edge.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Graphing.IEdge">
+            <summary>
+            Represents a single edge that connects two nodes together in a directed graph.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.IEdge.Origin">
+            <summary>
+            Gets the node that this edge starts at in the directed graph.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.IEdge.Target">
+            <summary>
+            Gets the node that this edge points to in the directed graph.
+            </summary>
+        </member>
+        <member name="T:Echo.Graphing.GraphExtensions">
+            <summary>
+            Provides utility methods that further extend the graph model classes.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.GraphExtensions.GetOtherNode(Echo.Graphing.IEdge,Echo.Graphing.INode)">
+            <summary>
+            Given an edge and one of the nodes that this edge connects with, gets the other end of the edge.
+            </summary>
+            <param name="edge">The edge.</param>
+            <param name="node">One of the nodes of the edge.</param>
+            <returns>The other end of the edge.</returns>
+        </member>
+        <member name="T:Echo.Graphing.IGraph">
+            <summary>
+            Provides members to model a directed graph-like structure.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.IGraph.GetEdges">
+            <summary>
+            Gets a collection of all directed edges (or arcs) that connect nodes in the directed graph.
+            </summary>
+            <returns>The edges.</returns>
+        </member>
+        <member name="T:Echo.Graphing.IIdentifiedNode">
+            <summary>
+            Represents a node that is tagged with an identification number.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.IIdentifiedNode.Id">
+            <summary>
+            Gets the unique identifier of the node.
+            </summary>
+        </member>
+        <member name="T:Echo.Graphing.INode">
+            <summary>
+            Represents a single node in a generic directed graph.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.INode.InDegree">
+            <summary>
+            Gets a value indicating the number of incoming edges that this node is incident to.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.INode.OutDegree">
+            <summary>
+            Gets a value indicating the number of outgoing edges that this node is incident to.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.INode.GetIncomingEdges">
+            <summary>
+            Gets a collection of all edges that target this node.
+            </summary>
+            <returns>The incoming edges.</returns>
+        </member>
+        <member name="M:Echo.Graphing.INode.GetOutgoingEdges">
+            <summary>
+            Gets a collection of all outgoing edges originating from this node.
+            </summary>
+            <returns>The outgoing edges.</returns>
+        </member>
+        <member name="M:Echo.Graphing.INode.GetPredecessors">
+            <summary>
+            Gets a collection of nodes that precede this node.
+            </summary>
+            <returns>The predecessor nodes.</returns>
+        </member>
+        <member name="M:Echo.Graphing.INode.GetSuccessors">
+            <summary>
+            Gets a collection of nodes that can be reached from this node by following one of the incident edges.
+            </summary>
+            <returns>The successor nodes.</returns>
+        </member>
+        <member name="M:Echo.Graphing.INode.HasPredecessor(Echo.Graphing.INode)">
+            <summary>
+            Determines whether the provided node precedes the current node. 
+            </summary>
+            <param name="node">The node to check.</param>
+            <returns><c>True</c> if the node is a predecessor, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.Graphing.INode.HasSuccessor(Echo.Graphing.INode)">
+            <summary>
+            Determines whether the provided node can be reached from this node by following one of the incident edges.
+            </summary>
+            <param name="node">The node to check.</param>
+            <returns><c>True</c> if the node is a successor, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="T:Echo.Graphing.ISubGraph">
+            <summary>
+            Represents a region of a graph, comprising of a subset of nodes of the full graph.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.ISubGraph.GetNodes">
+            <summary>
+            Gets a collection of nodes that this segment contains.
+            </summary>
+            <returns>The nodes.</returns>
+        </member>
+        <member name="M:Echo.Graphing.ISubGraph.GetSubGraphs">
+            <summary>
+            Gets a collection of sub graphs that this segment contains (if any).
+            </summary>
+            <returns>The sub graphs.</returns>
+        </member>
+        <member name="T:Echo.Graphing.Serialization.Dot.DotEntityStyle">
+            <summary>
+            Defines a tuple of style properties for an entity in a control flow graph. 
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.DotEntityStyle.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new style for an entity.
+            </summary>
+            <param name="color">The color of the entity.</param>
+            <param name="style">The line drawing style of the entity.</param>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.DotEntityStyle.Color">
+            <summary>
+            Gets the color of the entity.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.DotEntityStyle.Style">
+            <summary>
+            Gets the line drawing style of the entity.
+            </summary>
+        </member>
+        <member name="T:Echo.Graphing.Serialization.Dot.DotWriter">
+            <summary>
+            Provides a mechanism for writing graphs to a character stream using the dot file format.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.DotWriter.#ctor(System.IO.TextWriter)">
+            <summary>
+            Creates a new dot writer. 
+            </summary>
+            <param name="writer">The writer responsible for writing the output.</param>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.DotWriter.Writer">
+            <summary>
+            Gets the writer that is used to write textual data to the output stream.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.DotWriter.SeparateNodesAndEdges">
+            <summary>
+            Gets or sets a value indicating whether nodes in the output file should be explicitly defined before the
+            edges are defined.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.DotWriter.IncludeSemicolons">
+            <summary>
+            Gets or sets a value indicating whether statements in the output file should be separated by semicolons.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.DotWriter.NodeIdentifier">
+            <summary>
+            Gets or sets the object responsible for assigning unique identifiers to nodes in a graph.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.DotWriter.NodeAdorner">
+            <summary>
+            Gets or sets the adorner to use for adorning the nodes in the final output.
+            </summary>
+            <remarks>
+            When this property is set to <c>null</c>, no adornments will be added.
+            </remarks>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.DotWriter.EdgeAdorner">
+            <summary>
+            Gets or sets the adorner to use for adorning the edges in the final output.
+            </summary>
+            <remarks>
+            When this property is set to <c>null</c>, no adornments will be added.
+            </remarks>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.DotWriter.SubGraphAdorner">
+            <summary>
+            Gets or sets the adorner to use for adorning the sub graphs in the final output.
+            </summary>
+            <remarks>
+            When this property is set to <c>null</c>, no adornments will be added.
+            </remarks>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.DotWriter.Write(Echo.Graphing.IGraph)">
+            <summary>
+            Writes a graph to the character stream.
+            </summary>
+            <param name="graph">The graph to write.</param>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.DotWriter.WriteHeader(System.String,System.String)">
+            <summary>
+            Appends the header of a new graph to the output stream.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.DotWriter.WriteFooter">
+            <summary>
+            Appends the footer of a graph to the output stream.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.DotWriter.WriteNode(Echo.Graphing.INode)">
+            <summary>
+            Appends a single node definition to the output stream.
+            </summary>
+            <param name="node">The node to append.</param>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.DotWriter.WriteEdge(Echo.Graphing.IEdge)">
+            <summary>
+            Appends an edge to the output stream.
+            </summary>
+            <param name="edge">The edge to append.</param>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.DotWriter.WriteIdentifier(System.String)">
+            <summary>
+            Appends a single identifier to the output stream.
+            </summary>
+            <param name="text">The identifier to write.</param>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.DotWriter.WriteSemicolon">
+            <summary>
+            Appends a semicolon to the output stream, depending on the value of <see cref="P:Echo.Graphing.Serialization.Dot.DotWriter.IncludeSemicolons"/>.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.DotWriter.NeedsEscaping(System.String)">
+            <summary>
+            Determines whether an identifier requires escaping.
+            </summary>
+            <param name="text">The identifier to test.</param>
+            <returns><c>True</c> if the identifier needs escaping, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.DotWriter.WriteEscapedCharacter(System.Char)">
+            <summary>
+            Appends a single character to the output stream, and escapes it when necessary.
+            </summary>
+            <param name="c">The character to write.</param>
+        </member>
+        <member name="T:Echo.Graphing.Serialization.Dot.HashCodeNodeIdentifier">
+            <summary>
+            Provides an implementation of the <see cref="T:Echo.Graphing.Serialization.Dot.INodeIdentifier"/> interface, that returns the hash code of the
+            node object as unique identifiers.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.HashCodeNodeIdentifier.Instance">
+            <summary>
+            Provides a default instance of the <see cref="T:Echo.Graphing.Serialization.Dot.HashCodeNodeIdentifier"/> class. 
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.HashCodeNodeIdentifier.GetIdentifier(Echo.Graphing.INode)">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Graphing.Serialization.Dot.HexLabelNodeAdorner">
+            <summary>
+            Represents a node adorner that adds a label to a node containing the hexadecimal representation of the
+            <see cref="P:Echo.Graphing.IIdentifiedNode.Id"/> property.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.HexLabelNodeAdorner.Prefix">
+            <summary>
+            Gets or sets the string to prepend to the identifier of the node.  
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.HexLabelNodeAdorner.Suffix">
+            <summary>
+            Gets or sets the string to append to the identifier of the node.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.HexLabelNodeAdorner.PaddingZeroes">
+            <summary>
+            Gets or sets the minimal number of digits to use in the label.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.HexLabelNodeAdorner.GetNodeAttributes(Echo.Graphing.INode,System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Graphing.Serialization.Dot.IdentifiedNodeIdentifier">
+            <summary>
+            Provides an implementation of the <see cref="T:Echo.Graphing.Serialization.Dot.INodeIdentifier"/> interface, that returns the value of
+            <see cref="P:Echo.Graphing.IIdentifiedNode.Id"/>.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.Serialization.Dot.IdentifiedNodeIdentifier.Instance">
+            <summary>
+            Provides a default instance of the <see cref="T:Echo.Graphing.Serialization.Dot.IdentifiedNodeIdentifier"/> class. 
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.IdentifiedNodeIdentifier.GetIdentifier(Echo.Graphing.INode)">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Graphing.Serialization.Dot.IDotEdgeAdorner">
+            <summary>
+            Provides members for adorning an edge in a graph.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.IDotEdgeAdorner.GetEdgeAttributes(Echo.Graphing.IEdge,System.Int64,System.Int64)">
+            <summary>
+            Obtains the adornments that should be added to the edge. 
+            </summary>
+            <param name="edge">The edge to adorn.</param>
+            <param name="sourceId">The identifier assigned to the source node.</param>
+            <param name="targetId">The identifier assigned to the target node.</param>
+            <returns>The adornments.</returns>
+        </member>
+        <member name="T:Echo.Graphing.Serialization.Dot.IDotNodeAdorner">
+            <summary>
+            Provides members for adorning a node in a graph.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.IDotNodeAdorner.GetNodeAttributes(Echo.Graphing.INode,System.Int64)">
+            <summary>
+            Obtains the adornments that should be added to the node. 
+            </summary>
+            <param name="node">The node to adorn.</param>
+            <param name="id">The identifier assigned to the node.</param>
+            <returns>The adornments.</returns>
+        </member>
+        <member name="T:Echo.Graphing.Serialization.Dot.IDotSubGraphAdorner">
+            <summary>
+            Provides members for adorning a sub graph.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.IDotSubGraphAdorner.GetSubGraphName(Echo.Graphing.ISubGraph)">
+            <summary>
+            Determines the name of the provided sub graph.
+            </summary>
+            <param name="subGraph">The sub graph.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.IDotSubGraphAdorner.GetSubGraphAttributes(Echo.Graphing.ISubGraph)">
+            <summary>
+            Obtains the adornments that should be added to the sub graph. 
+            </summary>
+            <param name="subGraph">The sub graph to adorn.</param>
+            <returns>The adornments.</returns>
+        </member>
+        <member name="T:Echo.Graphing.Serialization.Dot.IncrementingNodeIdentifier">
+            <summary>
+            Provides an implementation of the <see cref="T:Echo.Graphing.Serialization.Dot.INodeIdentifier"/> interface, that maintains a counter
+            that is increased every time a new node is assigned an identifier.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.IncrementingNodeIdentifier.GetIdentifier(Echo.Graphing.INode)">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Graphing.Serialization.Dot.INodeIdentifier">
+            <summary>
+            Provides members for obtaining unique identifiers to a node.
+            </summary>
+        </member>
+        <member name="M:Echo.Graphing.Serialization.Dot.INodeIdentifier.GetIdentifier(Echo.Graphing.INode)">
+            <summary>
+            Gets the identifier assigned to the node.
+            </summary>
+            <param name="node">The node.</param>
+            <returns>The identifier.</returns>
+        </member>
+        <member name="T:Echo.Graphing.TreeNodeBase">
+            <summary>
+            Provides a base contract for nodes that will be used in a tree.
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.TreeNodeBase.Parent">
+            <summary>
+            The parent of this <see cref="T:Echo.Graphing.TreeNodeBase"/>
+            </summary>
+        </member>
+        <member name="P:Echo.Graphing.TreeNodeBase.InDegree">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.Graphing.TreeNodeBase.OutDegree">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeBase.GetChildren">
+            <summary>
+            Gets the children of the current <see cref="T:Echo.Graphing.TreeNodeBase"/>.
+            </summary>
+            <returns>The children.</returns>
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeBase.GetIncomingEdges">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeBase.GetOutgoingEdges">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeBase.GetPredecessors">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeBase.GetSuccessors">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeBase.HasPredecessor(Echo.Graphing.INode)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeBase.HasSuccessor(Echo.Graphing.INode)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeBase.UpdateChildNotNull``1(``0@,``0)">
+            <summary>
+            Updates the value and the parent of the <paramref name="child"/> node, ensuring that the new value is not
+            <c>null</c>.
+            </summary>
+            <param name="child">The child element to update.</param>
+            <param name="value">The new value to assign to the <paramref name="child"/>.</param>
+            <exception cref="T:System.ArgumentNullException">When the new node is <c>null</c>.</exception>
+            <exception cref="T:System.InvalidOperationException">When the node already has a parent.</exception>
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeBase.UpdateChild``1(``0@,``0)">
+            <summary>
+            Updates the value and the parent of the <paramref name="child"/> node.
+            </summary>
+            <param name="child">The child element to update.</param>
+            <param name="value">The new value to assign to the <paramref name="child"/>.</param>
+            <exception cref="T:System.InvalidOperationException">When the node already has a parent.</exception>
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeBase.OnParentChanged(Echo.Graphing.TreeNodeBase)">
+            <summary>
+            Called when the parent of the tree node changes.
+            </summary>
+            <param name="old">The original tree node parent.</param>
+        </member>
+        <member name="T:Echo.Graphing.TreeNodeCollection`2">
+            <summary>
+            Represents a collection of tree node children
+            </summary>
+            <typeparam name="TParent">The type of the parent</typeparam>
+            <typeparam name="TChild">The node to create a collection of</typeparam>
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeCollection`2.#ctor(`0)">
+            <summary>
+            Creates a new tree node collection with the specified <paramref name="owner"/>
+            </summary>
+            <param name="owner">The owner whose children this collection represents</param>
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeCollection`2.AssertNoParent(`1)">
+            <summary>
+            Asserts that the provided node is not already added to another tree node.
+            </summary>
+            <param name="node">The node to verify.</param>
+            <exception cref="T:System.ArgumentException">Occurs if the node is already added to another node.</exception>
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeCollection`2.SetItem(System.Int32,`1)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeCollection`2.ClearItems">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeCollection`2.RemoveItem(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Graphing.TreeNodeCollection`2.InsertItem(System.Int32,`1)">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.IndexableStack`1">
+            <summary>
+            Provides an implementation of a stack of which the elements can be accessed by index.
+            </summary>
+            <typeparam name="T">The type of elements in the stack.</typeparam>
+        </member>
+        <member name="P:Echo.IndexableStack`1.Count">
+            <inheritdoc />
+        </member>
+        <member name="P:Echo.IndexableStack`1.Item(System.Int32)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.IndexableStack`1.Peek">
+            <summary>
+            Returns the top element of the stack.
+            </summary>
+            <returns>The top element.</returns>
+        </member>
+        <member name="M:Echo.IndexableStack`1.Peek(System.Int32)">
+            <summary>
+            Returns the n-th top-most element of the stack.
+            </summary>
+            <returns>The element.</returns>
+        </member>
+        <member name="M:Echo.IndexableStack`1.Pop">
+            <summary>
+            Pops a single element from the stack.
+            </summary>
+            <returns>The popped element.</returns>
+        </member>
+        <member name="M:Echo.IndexableStack`1.Push(`0)">
+            <summary>
+            Pushes a single element onto the stack.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Echo.IndexableStack`1.Clear">
+            <summary>
+            Removes all elements from the stack.
+            </summary>
+        </member>
+        <member name="M:Echo.IndexableStack`1.GetEnumerator">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Memory.BasicMemorySpace">
+            <summary>
+            Provides a basic implementation of a <see cref="T:Echo.Memory.IMemorySpace"/>, where memory is one continuous block of data
+            that is fully accessible.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BasicMemorySpace.#ctor(System.Int32,System.Boolean)">
+            <summary>
+            Creates a new memory space.
+            </summary>
+            <param name="size">The number of bytes to store in the space.</param>
+            <param name="initialize">Indicates whether the space should be initialized with zeroes.</param>
+        </member>
+        <member name="M:Echo.Memory.BasicMemorySpace.#ctor(System.Byte[])">
+            <summary>
+            Wraps a byte array into a memory space.
+            </summary>
+            <param name="backBuffer">The data of the memory space.</param>
+        </member>
+        <member name="M:Echo.Memory.BasicMemorySpace.#ctor(Echo.Memory.BitVector)">
+            <summary>
+            Wraps a bit vector into a memory space.
+            </summary>
+            <param name="backBuffer">The data of the memory space.</param>
+        </member>
+        <member name="P:Echo.Memory.BasicMemorySpace.BackBuffer">
+            <summary>
+            Gets the back buffer behind the memory space that stores the raw data.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BasicMemorySpace.AddressRange">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.BasicMemorySpace.IsValidAddress(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.BasicMemorySpace.Rebase(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.BasicMemorySpace.Read(System.Int64,Echo.Memory.BitVectorSpan)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.BasicMemorySpace.Write(System.Int64,Echo.Memory.BitVectorSpan)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.BasicMemorySpace.Write(System.Int64,System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Memory.BitVector">
+            <summary>
+            Represents an array of bits for which the concrete may be known or unknown, and can be reinterpreted as
+            different value types, and operated on using the different semantics of these types.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Int32,System.Boolean)">
+            <summary>
+            Creates a new bit vector of the provided size.
+            </summary>
+            <param name="count">The number of bits in the vector.</param>
+            <param name="initialize">Indicates the bitvector should be initialized with zeroes.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Occurs when <paramref name="count"/> is not a multiple of 8.
+            </exception>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Byte[])">
+            <summary>
+            Wraps a byte array into a fully known bit vector.
+            </summary>
+            <param name="bits">The raw bits to wrap.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Byte[],System.Byte[])">
+            <summary>
+            Wraps a pair of byte arrays into a partially known bit vector.
+            </summary>
+            <param name="bits">The raw bits to wrap.</param>
+            <param name="knownMask">The bitmask indicating which bits in <paramref name="bits"/> are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Copies a span into a new bit vector.
+            </summary>
+            <param name="span">The span to copy.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.SByte)">
+            <summary>
+            Creates a new fully known 8-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.SByte,System.Byte)">
+            <summary>
+            Creates a new partially known 8-wide bit vector. 
+            </summary>
+            <param name="bits">The bits.</param>
+            <param name="knownMask">The bitmask indicating which bits in <paramref name="bits"/> are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Byte)">
+            <summary>
+            Creates a new fully known 8-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Byte,System.Byte)">
+            <summary>
+            Creates a new partially known 8-wide bit vector. 
+            </summary>
+            <param name="bits">The bits.</param>
+            <param name="knownMask">The bitmask indicating which bits in <paramref name="bits"/> are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Int16)">
+            <summary>
+            Creates a new fully known 16-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Int16,System.UInt16)">
+            <summary>
+            Creates a new partially known 16-wide bit vector. 
+            </summary>
+            <param name="bits">The bits.</param>
+            <param name="knownMask">The bitmask indicating which bits in <paramref name="bits"/> are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.UInt16)">
+            <summary>
+            Creates a new fully known 16-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.UInt16,System.UInt16)">
+            <summary>
+            Creates a new partially known 16-wide bit vector. 
+            </summary>
+            <param name="bits">The bits.</param>
+            <param name="knownMask">The bitmask indicating which bits in <paramref name="bits"/> are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Int32)">
+            <summary>
+            Creates a new fully known 32-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Int32,System.UInt32)">
+            <summary>
+            Creates a new partially known 32-wide bit vector. 
+            </summary>
+            <param name="bits">The bits.</param>
+            <param name="knownMask">The bitmask indicating which bits in <paramref name="bits"/> are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.UInt32)">
+            <summary>
+            Creates a new fully known 32-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.UInt32,System.UInt32)">
+            <summary>
+            Creates a new partially known 32-wide bit vector. 
+            </summary>
+            <param name="bits">The bits.</param>
+            <param name="knownMask">The bitmask indicating which bits in <paramref name="bits"/> are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Int64)">
+            <summary>
+            Creates a new fully known 64-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Int64,System.UInt64)">
+            <summary>
+            Creates a new partially known 64-wide bit vector. 
+            </summary>
+            <param name="bits">The bits.</param>
+            <param name="knownMask">The bitmask indicating which bits in <paramref name="bits"/> are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.UInt64)">
+            <summary>
+            Creates a new fully known 64-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.UInt64,System.UInt64)">
+            <summary>
+            Creates a new partially known 64-wide bit vector. 
+            </summary>
+            <param name="bits">The bits.</param>
+            <param name="knownMask">The bitmask indicating which bits in <paramref name="bits"/> are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Single)">
+            <summary>
+            Creates a new fully known 32-wide bit vector based on a floating point number. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.#ctor(System.Double)">
+            <summary>
+            Creates a new fully known 64-wide bit vector based on a floating point number. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="P:Echo.Memory.BitVector.Bits">
+            <summary>
+            Gets the raw bits stored in this bit vector.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVector.KnownMask">
+            <summary>
+            Gets a bit mask indicating which bits in <see cref="P:Echo.Memory.BitVector.Bits"/> are known.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVector.Count">
+            <summary>
+            Gets the number of bits stored in the bit vector.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVector.ByteCount">
+            <summary>
+            Gets the number of bytes stored in the bit vector.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVector.IsFullyKnown">
+            <summary>
+            Gets a value indicating whether all bits in the vector are known. 
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVector.AsSpan">
+            <summary>
+            Creates a new span of the entire bit vector.
+            </summary>
+            <returns>The constructed span.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVector.AsSpan(System.Int32)">
+            <summary>
+            Creates a new span of a portion of the bit vector that starts at a provided bit index. 
+            </summary>
+            <param name="bitIndex">The index to start the span at.</param>
+            <returns>The constructed span.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVector.AsSpan(System.Int32,System.Int32)">
+            <summary>
+            Creates a new span of a portion of the bit vector that starts at a provided bit index and has a provided length.
+            </summary>
+            <param name="bitIndex">The index to start the span at.</param>
+            <param name="length">The number of bits in the slice.</param>
+            <returns>The constructed span.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVector.ParseBinary(System.String)">
+            <summary>
+            Parses a binary string, where the least significant bit is at the end of the string, into a bit vector.
+            </summary>
+            <param name="binaryString">The binary string to parse. This string may contain unknown bits (<c>?</c>).</param>
+            <returns>The parsed bit vector.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVector.Clone">
+            <summary>
+            Deep copies the bit vector.
+            </summary>
+            <returns>The copied bit vector.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVector.Clone(Echo.Memory.BitVectorPool)">
+            <summary>
+            Deep copies the bit vector.
+            </summary>
+            <param name="pool">The pool to rent the cloned bitvector from.</param>
+            <returns>The copied bit vector.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVector.Resize(System.Int32,System.Boolean)">
+            <summary>
+            Allocates a new bit vector that contains the same data, but is extended or truncated to a new size.
+            </summary>
+            <param name="newSize">The new size.</param>
+            <param name="signExtend">When <paramref name="newSize"/> is larger than the original size, a value
+            indicating whether the vector should be sign extended or not.</param>
+            <returns>The new vector.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVector.Resize(System.Int32,System.Boolean,Echo.Memory.BitVectorPool)">
+            <summary>
+            Rents a bit vector from a pool that contains the same data, but is extended or truncated to a new size.
+            </summary>
+            <param name="newSize">The new size.</param>
+            <param name="signExtend">When <paramref name="newSize"/> is larger than the original size, a value
+            indicating whether the vector should be sign extended or not.</param>
+            <param name="pool">The pool to rent the new vector from.</param>
+            <returns>The new vector.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVector.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.BitVector.op_Implicit(System.SByte)~Echo.Memory.BitVector">
+            <summary>
+            Creates a new fully known 8-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.op_Implicit(System.Byte)~Echo.Memory.BitVector">
+            <summary>
+            Creates a new fully known 8-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.op_Implicit(System.Int16)~Echo.Memory.BitVector">
+            <summary>
+            Creates a new fully known 16-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.op_Implicit(System.UInt16)~Echo.Memory.BitVector">
+            <summary>
+            Creates a new fully known 16-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.op_Implicit(System.Int32)~Echo.Memory.BitVector">
+            <summary>
+            Creates a new fully known 32-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.op_Implicit(System.UInt32)~Echo.Memory.BitVector">
+            <summary>
+            Creates a new fully known 32-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.op_Implicit(System.Int64)~Echo.Memory.BitVector">
+            <summary>
+            Creates a new fully known 64-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.op_Implicit(System.UInt64)~Echo.Memory.BitVector">
+            <summary>
+            Creates a new fully known 64-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.op_Implicit(System.Single)~Echo.Memory.BitVector">
+            <summary>
+            Creates a new fully known 32-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVector.op_Implicit(System.Double)~Echo.Memory.BitVector">
+            <summary>
+            Creates a new fully known 64-wide bit vector. 
+            </summary>
+            <param name="value">The bits.</param>
+        </member>
+        <member name="T:Echo.Memory.BitVectorPool">
+            <summary>
+            Provides a mechanism for reusing instances of <see cref="T:Echo.Memory.BitVector"/>.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorPool.Rent(System.Int32,System.Boolean)">
+            <summary>
+            Rents a single bit vector of the provided size.
+            </summary>
+            <param name="size">The number of bits in the vector to rent.</param>
+            <param name="initialize">A value indicating whether the bits should be cleared out or marked unknown.</param>
+            <returns>The bit vector.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorPool.RentNativeInteger(System.Boolean,System.Boolean)">
+            <summary>
+            Rents a native integer bit vector.
+            </summary>
+            <param name="is32Bit">A value indicating the vector should be 32 or 64 bits long.</param>
+            <param name="initialize">A value indicating whether the bits should be cleared out or marked unknown.</param>
+            <returns>The bit vector.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorPool.Return(Echo.Memory.BitVector)">
+            <summary>
+            Returns the bit vector to the pool.
+            </summary>
+            <param name="vector">The vector.</param>
+            <returns><c>true</c> if the bitvector was an instance of the pool, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="T:Echo.Memory.BitVectorSpan">
+            <summary>
+            Represents a slice of an array of bits for which the concrete may be known or unknown, and can be
+            reinterpreted as different value types, and operated on using the different semantics of these types.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Not">
+            <summary>
+            Inverts all the bits in the vector.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.And(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Performs a bitwise AND operation with another bit vector.
+            </summary>
+            <param name="other">The other bit vector.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Or(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Performs a bitwise OR operation with another bit vector.
+            </summary>
+            <param name="other">The other bit vector.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Xor(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Performs a bitwise XOR operation with another bit vector.
+            </summary>
+            <param name="other">The other bit vector.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.ShiftLeft(System.Int32)">
+            <summary>
+            Shift all bits in the vector to the left, filling the least significant bits with zeroes.
+            </summary>
+            <param name="count">The number of bits to shift with.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.ShiftRight(System.Int32,System.Boolean)">
+            <summary>
+            Shift all bits in the vector to the right, and either sign- or zero-extends the value.
+            </summary>
+            <param name="count">The number of bits to shift with.</param>
+            <param name="signExtend">Gets a value indicating whether the bits should be sign- or zero-extended.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.#ctor(Echo.Memory.BitVector)">
+            <summary>
+            Creates a new span around an existing bitvector.
+            </summary>
+            <param name="vector">The vector to span.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.#ctor(System.Span{System.Byte},System.Span{System.Byte})">
+            <summary>
+            Creates a new span around a pair of bits and a known bit mask.
+            </summary>
+            <param name="bits">The concrete bits stored in the bit vector.</param>
+            <param name="knownMask">The bitmask indicating which bits in <paramref name="bits"/> are known.</param>
+            <exception cref="T:System.ArgumentException">
+            Occurs when the length of <paramref name="bits"/> and <paramref name="knownMask"/> do not match up.
+            </exception>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.Item(System.Int32)">
+            <summary>
+            Gets or sets a single bit in the bit vector span.
+            </summary>
+            <param name="index">The index of the bit to get.</param>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.Bits">
+            <summary>
+            Gets the raw bits stored in this bit vector span.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.KnownMask">
+            <summary>
+            Gets a bit mask indicating which bits in <see cref="P:Echo.Memory.BitVectorSpan.Bits"/> are known.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.Count">
+            <summary>
+            Gets the number of bits stored in the bit vector.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.ByteCount">
+            <summary>
+            Gets the number of bytes stored in the bit vector.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.IsFullyKnown">
+            <summary>
+            Gets a value indicating whether all bits in the vector are known. 
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.IsZero">
+            <summary>
+            Gets a value indicating whether all bits in the vector are set to zero.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Slice(System.Int32)">
+            <summary>
+            Forms a slice of a bit vector that starts at a provided bit index.
+            </summary>
+            <param name="bitIndex">The bit index to start the slice at.</param>
+            <returns>The constructed slice.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Occurs when the bit index is not a multiple of 8.</exception>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Slice(System.Int32,System.Int32)">
+            <summary>
+            Forms a slice of a bit vector that starts at a provided bit index and has a provided length.
+            </summary>
+            <param name="bitIndex">The bit index to start the slice at.</param>
+            <param name="length">The number of bits in the slice.</param>
+            <returns>The constructed slice.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Occurs when the bit index is not a multiple of 8.</exception>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.CopyTo(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Copies all bits and known bit mask to the provided bit vector. 
+            </summary>
+            <param name="buffer">The bit buffer to copy the bits to.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Clear">
+            <summary>
+            Clears the bit vector with zeroes.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.MarkFullyKnown">
+            <summary>
+            Marks the entire bit vector fully known, treating all bits in <see cref="P:Echo.Memory.BitVectorSpan.Bits"/> as actual data.
+            </summary>
+            <remarks>
+            This is effectively setting all bits in <see cref="P:Echo.Memory.BitVectorSpan.KnownMask"/>.
+            </remarks>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.MarkFullyUnknown">
+            <summary>
+            Marks the entire bit vector fully unknown.
+            </summary>
+            <remarks>
+            This is effectively clearing all bits in <see cref="P:Echo.Memory.BitVectorSpan.KnownMask"/>. It does not change the value of <see cref="P:Echo.Memory.BitVectorSpan.Bits"/>.
+            </remarks>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.ReadNativeInteger(System.Boolean)">
+            <summary>
+            Reads a native integer from the vector.
+            </summary>
+            <param name="is32Bit">A value indicating whether the native integer is 32 or 64 bits wide.</param>
+            <returns>The read integer.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Writes fully known bytes into the bit vector. 
+            </summary>
+            <param name="data">The data to write.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Writes data into the bit vector. 
+            </summary>
+            <param name="data">The data to write.</param>
+            <param name="knownMask">The mask indicating which bits in <paramref name="data"/> are known.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            Occurs when the length of <paramref name="data"/> and <paramref name="knownMask"/> do not match.
+            </exception>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Writes data into the bit vector. 
+            </summary>
+            <param name="data">The data to write.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Fill(System.Byte)">
+            <summary>
+            Fills the bit vector with the repetition of a byte.
+            </summary>
+            <param name="value">The value to fill the bit vector with.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Fill(System.Byte,System.Byte)">
+            <summary>
+            Fills the bit vector with the repetition of a partially known byte.
+            </summary>
+            <param name="value">The value to fill the bit vector with.</param>
+            <param name="knownMask">The mask indicating which bits in <paramref name="value"/> are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.WriteBinaryString(System.String)">
+            <summary>
+            Writes a (partially known) bit string, where the least significant bit is at the end of the string, into
+            the bit vector at the provided bit index.
+            </summary>
+            <param name="binaryString">The binary string to write. This string may contain unknown bits (<c>?</c>).</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">Occurs when the bit index is not a multiple of 8.</exception>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.ToBitString">
+            <summary>
+            Constructs a binary string that represents the binary number stored in the bit vector.  
+            </summary>
+            <returns>The binary string.</returns>
+            <remarks>
+            When a bit is marked as unknown, its digit is replaced with a question mark (<c>?</c>). 
+            </remarks>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.ToHexString">
+            <summary>
+            Constructs a string that represents the raw data stored in the bit vector as a hexadecimal byte string.  
+            </summary>
+            <returns>The byte string.</returns>
+            <remarks>
+            When any bit in a nibble is marked as unknown, its digit is replaced with a question mark (<c>?</c>). 
+            </remarks>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.ToVector">
+            <summary>
+            Copies the span into a new bit vector.
+            </summary>
+            <returns>The vector.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.ToVector(Echo.Memory.BitVectorPool)">
+            <summary>
+            Copies the span into a new bit vector that is rented from the provided pool.
+            </summary>
+            <param name="pool">The pool to rent the vector from.</param>
+            <returns>The vector.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IsEqualTo(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Determines whether the current bit vector is equal to another bit vector.
+            </summary>
+            <param name="other">The other bit vector.</param>
+            <returns>
+            <see cref="F:Echo.Trilean.True"/> if the bit vector are equal, <see cref="F:Echo.Trilean.False"/> if not, and
+            <see cref="F:Echo.Trilean.Unknown"/> if the conclusion of the comparison is not certain.
+            </returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Equals(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Compares two <see cref="T:Echo.Memory.BitVectorSpan"/>'s
+            </summary>
+            <remarks>
+            This overload exists to avoid boxing allocations.
+            </remarks>
+            <param name="other">The <see cref="T:Echo.Memory.BitVectorSpan"/> to compare to</param>
+            <returns>Whether the two <see cref="T:Echo.Memory.BitVectorSpan"/>'s are equal</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.op_Implicit(Echo.Memory.BitVector)~Echo.Memory.BitVectorSpan">
+            <summary>
+            Creates a span for the provided bit vector. 
+            </summary>
+            <param name="vector">The vector.</param>
+            <returns>The span.</returns>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.F32">
+            <summary>
+            Interprets the bit vector as a 32 bit floating point number, and gets or sets the immediate value for it.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.F64">
+            <summary>
+            Interprets the bit vector as a 64 bit floating point number, and gets or sets the immediate value for it.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.Single)">
+            <summary>
+            Interprets the bit vector as a 32 bit floating point number, and writes a fully known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.Double)">
+            <summary>
+            Interprets the bit vector as a 64 bit floating point number, and writes a fully known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.FloatNegate">
+            <summary>
+            Interprets the bitvector as a floating point number, and negates it.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.FloatAdd(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Interprets the bitvector as a floating point number, and adds another floating point number to it.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.FloatSubtract(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Interprets the bitvector as a floating point number, and subtracts another floating point number to it.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.FloatMultiply(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Interprets the bitvector as a floating point number, and multiplies it with another floating point number.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.FloatDivide(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Interprets the bitvector as a floating point number, and divides it with another floating point number.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.FloatRemainder(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Interprets the bitvector as a floating point number, divides it with another floating point number and
+            stores the remainder of the division.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.FloatIsLessThan(Echo.Memory.BitVectorSpan,System.Boolean)">
+            <summary>
+            interprets the bitvector as a floating point number, and determines whether it is smaller than the provided
+            floating point bitvector.
+            </summary>
+            <param name="other">The other floating point number.</param>
+            <param name="ordered">A value indicating whether the comparison should be an ordered comparison or not.</param>
+            <returns>
+            <see cref="F:Echo.Trilean.True"/> if the current number is less than the provided number,
+            <see cref="F:Echo.Trilean.False"/> if not, and <see cref="F:Echo.Trilean.Unknown"/> if the conclusion of the comparison
+            is not certain.
+            </returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.FloatIsGreaterThan(Echo.Memory.BitVectorSpan,System.Boolean)">
+            <summary>
+            interprets the bitvector as a floating point number, and determines whether it is greater than the provided
+            floating point bitvector.
+            </summary>
+            <param name="other">The other floating point number.</param>
+            <param name="ordered">A value indicating whether the comparison should be an ordered comparison or not.</param>
+            <returns>
+            <see cref="F:Echo.Trilean.True"/> if the current number is greater than the provided number,
+            <see cref="F:Echo.Trilean.False"/> if not, and <see cref="F:Echo.Trilean.Unknown"/> if the conclusion of the comparison
+            is not certain.
+            </returns>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.I8">
+            <summary>
+            Interprets the bit vector as a signed 8 bit integer, and gets or sets the immediate value for it.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.U8">
+            <summary>
+            Interprets the bit vector as an unsigned 8 bit integer, and gets or sets the immediate value for it.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.I16">
+            <summary>
+            Interprets the bit vector as a signed 16 bit integer, and gets or sets the immediate value for it.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.U16">
+            <summary>
+            Interprets the bit vector as an unsigned 16 bit integer, and gets or sets the immediate value for it.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.I32">
+            <summary>
+            Interprets the bit vector as a signed 32 bit integer, and gets or sets the immediate value for it.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.U32">
+            <summary>
+            Interprets the bit vector as an unsigned 32 bit integer, and gets or sets the immediate value for it.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.I64">
+            <summary>
+            Interprets the bit vector as a signed 64 bit integer, and gets or sets the immediate value for it.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.BitVectorSpan.U64">
+            <summary>
+            Interprets the bit vector as an unsigned 64 bit integer, and gets or sets the immediate value for it.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.Byte)">
+            <summary>
+            Interprets the bit vector as an unsigned 8 bit integer, and writes a fully known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.Byte,System.Byte)">
+            <summary>
+            Interprets the bit vector as an unsigned 8 bit integer, and writes a partially known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+            <param name="knownMask">The mask indicating which bits are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.SByte)">
+            <summary>
+            Interprets the bit vector as a signed 8 bit integer, and writes a fully known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.SByte,System.Byte)">
+            <summary>
+            Interprets the bit vector as a signed 8 bit integer, and writes a partially known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+            <param name="knownMask">The mask indicating which bits are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.UInt16)">
+            <summary>
+            Interprets the bit vector as an unsigned 16 bit integer, and writes a fully known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.UInt16,System.UInt16)">
+            <summary>
+            Interprets the bit vector as an unsigned 16 bit integer, and writes a partially known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+            <param name="knownMask">The mask indicating which bits are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.Int16)">
+            <summary>
+            Interprets the bit vector as a signed 16 bit integer, and writes a fully known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.Int16,System.UInt16)">
+            <summary>
+            Interprets the bit vector as a signed 16 bit integer, and writes a partially known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+            <param name="knownMask">The mask indicating which bits are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.UInt32)">
+            <summary>
+            Interprets the bit vector as an unsigned 32 bit integer, and writes a fully known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.UInt32,System.UInt32)">
+            <summary>
+            Interprets the bit vector as an unsigned 32 bit integer, and writes a partially known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+            <param name="knownMask">The mask indicating which bits are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.Int32)">
+            <summary>
+            Interprets the bit vector as a signed 32 bit integer, and writes a fully known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.Int32,System.UInt32)">
+            <summary>
+            Interprets the bit vector as a signed 32 bit integer, and writes a partially known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+            <param name="knownMask">The mask indicating which bits are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.UInt64)">
+            <summary>
+            Interprets the bit vector as an unsigned 64 bit integer, and writes a fully known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.UInt64,System.UInt64)">
+            <summary>
+            Interprets the bit vector as an unsigned 64 bit integer, and writes a partially known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+            <param name="knownMask">The mask indicating which bits are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.Int64)">
+            <summary>
+            Interprets the bit vector as a signed 64 bit integer, and writes a fully known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.Write(System.Int64,System.UInt64)">
+            <summary>
+            Interprets the bit vector as an signed 64 bit integer, and writes a partially known immediate value to it. 
+            </summary>
+            <param name="value">The value.</param>
+            <param name="knownMask">The mask indicating which bits are known.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.WriteNativeInteger(System.Int64,System.Boolean)">
+            <summary>
+            Writes a fully known native integer into the bit vector at the provided bit index.
+            </summary>
+            <param name="value">The native integer to write.</param>
+            <param name="is32Bit">A value indicating whether the native integer is 32 or 64 bits wide.</param>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.GetMsb">
+            <summary>
+            Interprets the bit vector as an integer, and obtains the most significant bit (MSB) of the bit vector.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerAdd(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Interprets the bit vector as an integer and adds a second integer to it. 
+            </summary>
+            <param name="other">The integer to add.</param>
+            <exception cref="T:System.ArgumentException">Occurs when the sizes of the integers do not match in bit length.</exception>
+            <returns>The value of the carry bit after the addition completed.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerIncrement">
+            <summary>
+            Interprets the bit vector as an integer and increments it by one. 
+            </summary>
+            <returns>The value of the carry bit after the increment operation completed.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerNegate">
+            <summary>
+            Interprets the bit vector as an integer and negates it according to the two's complement semantics.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerSubtract(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Interprets the bit vector as an integer and subtracts a second integer from it.
+            </summary>
+            <param name="other">The integer to subtract.</param>
+            <exception cref="T:System.ArgumentException">Occurs when the sizes of the integers do not match in bit length.</exception>
+            <returns>The value of the borrow bit after the subtraction completed.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerDecrement">
+            <summary>
+            Interprets the bit vector as an integer and decrements it by one. 
+            </summary>
+            <returns>The value of the carry bit after the decrement operation completed.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerMultiply(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Interprets the bit vector as an integer and multiplies it by a second integer.
+            </summary>
+            <param name="other">The integer to multiply the current integer with.</param>
+            <exception cref="T:System.ArgumentException">Occurs when the sizes of the integers do not match in bit length.</exception>
+            <returns>A value indicating whether the result was truncated.</returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerDivide(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Interprets the bit vector as an integer and divides it by a second integer.
+            </summary>
+            <param name="other">The integer to divide the current integer by.</param>
+            <exception cref="T:System.ArgumentException">Occurs when the sizes of the integers do not match in bit length.</exception>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerRemainder(Echo.Memory.BitVectorSpan)">
+            <summary>
+            Interprets the bit vector as an integer, divides it by a second integer and produces the remainder.
+            </summary>
+            <param name="other">The integer to divide the current integer by.</param>
+            <exception cref="T:System.ArgumentException">Occurs when the sizes of the integers do not match in bit length.</exception>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerIsGreaterThan(Echo.Memory.BitVectorSpan,System.Boolean)">
+            <summary>
+            Interprets the bit vector as an integer, and determines whether the integer is greater than another integer.
+            </summary>
+            <param name="other">The other integer.</param>
+            <param name="signed">Indicates the integers should be interpreted as signed or unsigned integers.</param>
+            <returns>
+            <see cref="F:Echo.Trilean.True"/> if the current integer is greater than the provided integer,
+            <see cref="F:Echo.Trilean.False"/> if not, and <see cref="F:Echo.Trilean.Unknown"/> if the conclusion of the comparison
+            is not certain.
+            </returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerIsGreaterThanOrEqual(Echo.Memory.BitVectorSpan,System.Boolean)">
+            <summary>
+            Interprets the bit vector as an integer, and determines whether the integer is greater than or equal to
+            another integer.
+            </summary>
+            <param name="other">The other integer.</param>
+            <param name="signed">Indicates the integers should be interpreted as signed or unsigned integers.</param>
+            <returns>
+            <see cref="F:Echo.Trilean.True"/> if the current integer is greater than or equal to the provided integer,
+            <see cref="F:Echo.Trilean.False"/> if not, and <see cref="F:Echo.Trilean.Unknown"/> if the conclusion of the comparison
+            is not certain.
+            </returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerIsLessThan(Echo.Memory.BitVectorSpan,System.Boolean)">
+            <summary>
+            Interprets the bit vector as an integer, and determines whether the integer is less than another integer.
+            </summary>
+            <param name="other">The other integer.</param>
+            <param name="signed">Indicates the integers should be interpreted as signed or unsigned integers.</param>
+            <returns>
+            <see cref="F:Echo.Trilean.True"/> if the current integer is less than the provided integer,
+            <see cref="F:Echo.Trilean.False"/> if not, and <see cref="F:Echo.Trilean.Unknown"/> if the conclusion of the comparison
+            is not certain.
+            </returns>
+        </member>
+        <member name="M:Echo.Memory.BitVectorSpan.IntegerIsLessThanOrEqual(Echo.Memory.BitVectorSpan,System.Boolean)">
+            <summary>
+            Interprets the bit vector as an integer, and determines whether the integer is less than or equal to
+            another integer.
+            </summary>
+            <param name="other">The other integer.</param>
+            <param name="signed">Indicates the integers should be interpreted as signed or unsigned integers.</param>
+            <returns>
+            <see cref="F:Echo.Trilean.True"/> if the current integer is greater than or equal to the provided integer,
+            <see cref="F:Echo.Trilean.False"/> if not, and <see cref="F:Echo.Trilean.Unknown"/> if the conclusion of the comparison
+            is not certain.
+            </returns>
+        </member>
+        <member name="T:Echo.Memory.GenericMockMemory`1">
+            <summary>
+            Provides a semi high-level mapping between addresses and objects that live outside of the sandbox. 
+            </summary>
+            <typeparam name="T">The type of objects to store.</typeparam>
+            <remarks>
+            Reading from this memory chunk always results in reading unknown memory.
+            </remarks>
+        </member>
+        <member name="M:Echo.Memory.GenericMockMemory`1.#ctor(System.Int32,System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
+            <summary>
+            Creates a new generic mock memory chunk.
+            </summary>
+            <param name="size">The size in bytes of the memory.</param>
+            <param name="itemSize">The size in bytes of a single element.</param>
+            <param name="comparer">The equality comparer to use for comparing elements for uniqueness.</param>
+        </member>
+        <member name="M:Echo.Memory.GenericMockMemory`1.GetAddress(`0)">
+            <summary>
+            Gets the address or assigns a new address to the provided object. 
+            </summary>
+            <param name="item">The object.</param>
+            <returns>The address.</returns>
+        </member>
+        <member name="M:Echo.Memory.GenericMockMemory`1.TryGetObject(System.Int64,`0@)">
+            <summary>
+            Attempts to get the object at the provided address.
+            </summary>
+            <param name="address">The address.</param>
+            <param name="value">The object.</param>
+            <returns><c>true</c> if the address maps to an object, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.Memory.GenericMockMemory`1.GetObject(System.Int64)">
+            <summary>
+            Gets the object at the provided address.
+            </summary>
+            <param name="address">The address.</param>
+            <returns>The object.</returns>
+        </member>
+        <member name="T:Echo.Memory.Heap.BasicHeap">
+            <summary>
+            Provides a basic implementation of a heap.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.Heap.BasicHeap.#ctor(System.Int32)">
+            <summary>
+            Creates a new empty heap.
+            </summary>
+            <param name="size">The maximum size of the heap.</param>
+        </member>
+        <member name="P:Echo.Memory.Heap.BasicHeap.AddressRange">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.Heap.BasicHeap.Allocate(System.UInt32,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.Heap.BasicHeap.Free(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.Heap.BasicHeap.GetChunkSize(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.Heap.BasicHeap.GetChunkSpan(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.Heap.BasicHeap.GetAllocatedChunks">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.Heap.BasicHeap.IsValidAddress(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.Heap.BasicHeap.Rebase(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.Heap.BasicHeap.Read(System.Int64,Echo.Memory.BitVectorSpan)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.Heap.BasicHeap.Write(System.Int64,Echo.Memory.BitVectorSpan)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.Heap.BasicHeap.Write(System.Int64,System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Memory.Heap.IHeap">
+            <summary>
+            Provides members for allocating and freeing chunks of memory.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.Heap.IHeap.Allocate(System.UInt32,System.Boolean)">
+            <summary>
+            Allocates a chunk of uninitialized memory in the heap.
+            </summary>
+            <param name="size">The size of the chunk in bytes.</param>
+            <param name="initialize">A value indicating whether the chunk of memory should be cleared out with zeroes.</param>
+            <returns>The address of the allocated chunk.</returns>
+        </member>
+        <member name="M:Echo.Memory.Heap.IHeap.Free(System.Int64)">
+            <summary>
+            Releases a chunk of memory in the heap.
+            </summary>
+            <param name="address">The address of the chunk to free.</param>
+        </member>
+        <member name="M:Echo.Memory.Heap.IHeap.GetChunkSize(System.Int64)">
+            <summary>
+            Gets the size of the chunk that was allocated at the provided address.
+            </summary>
+            <param name="address">The address of the chunk.</param>
+            <returns>The size in bytes.</returns>
+        </member>
+        <member name="M:Echo.Memory.Heap.IHeap.GetChunkSpan(System.Int64)">
+            <summary>
+            Obtains a writable bit vector slice that spans the entire chunk at a provided address.
+            </summary>
+            <param name="address">The address of the chunk</param>
+            <returns>The chunk slice.</returns>
+        </member>
+        <member name="M:Echo.Memory.Heap.IHeap.GetAllocatedChunks">
+            <summary>
+            Gets a collection of all chunk address ranges within the heap that are currently allocated. 
+            </summary>
+            <returns>The ranges.</returns>
+        </member>
+        <member name="T:Echo.Memory.IMemorySpace">
+            <summary>
+            Provides members for accessing and writing (partially known) memory.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.IMemorySpace.AddressRange">
+            <summary>
+            Gets the range that this memory space spans.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.IMemorySpace.IsValidAddress(System.Int64)">
+            <summary>
+            Gets a value indicating whether the provided address is a valid address, and can be used to read
+            and/or write to.
+            </summary>
+            <param name="address">The address to query.</param>
+            <returns><c>true</c> if the address was valid, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.Memory.IMemorySpace.Rebase(System.Int64)">
+            <summary>
+            Relocates the memory to a new base address.
+            </summary>
+            <param name="baseAddress">The new base address.</param>
+        </member>
+        <member name="M:Echo.Memory.IMemorySpace.Read(System.Int64,Echo.Memory.BitVectorSpan)">
+            <summary>
+            Copies data at the provided address into the provided buffer. 
+            </summary>
+            <param name="address">The address to start reading at.</param>
+            <param name="buffer">The buffer to write into.</param>
+        </member>
+        <member name="M:Echo.Memory.IMemorySpace.Write(System.Int64,Echo.Memory.BitVectorSpan)">
+            <summary>
+            Writes the provided buffer of data at the provided address. 
+            </summary>
+            <param name="address">The address to start writing at.</param>
+            <param name="buffer">The data to write.</param>
+        </member>
+        <member name="M:Echo.Memory.IMemorySpace.Write(System.Int64,System.ReadOnlySpan{System.Byte})">
+            <summary>
+            Writes the provided buffer of data at the provided address. 
+            </summary>
+            <param name="address">The address to start writing at.</param>
+            <param name="buffer">The data to write.</param>
+        </member>
+        <member name="T:Echo.Memory.UninitializedMemorySpace">
+            <summary>
+            Represents a chunk of uninitialized (unknown) memory. Writing to this memory space does not change the contents.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.UninitializedMemorySpace.#ctor(System.Int32)">
+            <summary>
+            Creates a new uninitialized memory space.
+            </summary>
+            <param name="size">The number of bytes to store in the space.</param>
+        </member>
+        <member name="P:Echo.Memory.UninitializedMemorySpace.AddressRange">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.UninitializedMemorySpace.IsValidAddress(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.UninitializedMemorySpace.Rebase(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.UninitializedMemorySpace.Read(System.Int64,Echo.Memory.BitVectorSpan)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.UninitializedMemorySpace.Write(System.Int64,Echo.Memory.BitVectorSpan)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.UninitializedMemorySpace.Write(System.Int64,System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Memory.VirtualMemory">
+            <summary>
+            Represents an addressable region of memory that maps a collection of memory spaces to virtual addresses.
+            </summary>
+            <remarks>
+            This class can be compared to the entire memory space of a running process.
+            </remarks>
+        </member>
+        <member name="F:Echo.Memory.VirtualMemory._spaces">
+            <summary>
+            Memory spaces, sorted by their address range.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.VirtualMemory.#ctor">
+            <summary>
+            Creates new uninitialized virtual memory.
+            </summary>
+        </member>
+        <member name="M:Echo.Memory.VirtualMemory.#ctor(System.Int64)">
+            <summary>
+            Creates new uninitialized virtual memory with the provided size.
+            </summary>
+        </member>
+        <member name="P:Echo.Memory.VirtualMemory.AddressRange">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.VirtualMemory.Map(System.Int64,Echo.Memory.IMemorySpace)">
+            <summary>
+            Maps a memory space at the provided virtual memory address.
+            </summary>
+            <param name="address">The address to map the data at.</param>
+            <param name="space">The data to map.</param>
+            <exception cref="T:System.ArgumentException">Occurs when the address was already in use.</exception>
+        </member>
+        <member name="M:Echo.Memory.VirtualMemory.Unmap(System.Int64)">
+            <summary>
+            Unmaps a memory space that was mapped at the provided address.
+            </summary>
+            <param name="address">The address of the memory space to unmap.</param>
+        </member>
+        <member name="M:Echo.Memory.VirtualMemory.GetMappedRanges">
+            <summary>
+            Gets a collection of all ranges that were mapped into this virtual memory.
+            </summary>
+            <returns>The address ranges within the memory.</returns>
+        </member>
+        <member name="M:Echo.Memory.VirtualMemory.IsValidAddress(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.VirtualMemory.Rebase(System.Int64)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.VirtualMemory.Read(System.Int64,Echo.Memory.BitVectorSpan)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.VirtualMemory.Write(System.Int64,Echo.Memory.BitVectorSpan)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Memory.VirtualMemory.Write(System.Int64,System.ReadOnlySpan{System.Byte})">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.Trilean">
+            <summary>
+            Represents a ternary boolean (true, false or unknown) value. 
+            </summary>
+        </member>
+        <member name="F:Echo.Trilean.True">
+            <summary>
+            Represents the true value.
+            </summary>
+        </member>
+        <member name="F:Echo.Trilean.False">
+            <summary>
+            Represents the false value.
+            </summary>
+        </member>
+        <member name="F:Echo.Trilean.Unknown">
+            <summary>
+            Represents the unknown value.
+            </summary>
+        </member>
+        <member name="M:Echo.Trilean.#ctor(System.Boolean)">
+            <summary>
+            Creates a new trilean.
+            </summary>
+            <param name="value">The boolean value.</param>
+        </member>
+        <member name="M:Echo.Trilean.#ctor(Echo.TrileanValue)">
+            <summary>
+            Creates a new trilean.
+            </summary>
+            <param name="value">The trilean value.</param>
+        </member>
+        <member name="M:Echo.Trilean.#ctor(System.Nullable{System.Boolean})">
+            <summary>
+            Creates a new trilean.
+            </summary>
+            <param name="value">
+            The nullable boolean value. If the value is <c>null</c>, <see cref="F:Echo.TrileanValue.Unknown"/> will be assumed.
+            </param>
+        </member>
+        <member name="P:Echo.Trilean.Value">
+            <summary>
+            Gets the raw integer representation of the trilean value.
+            </summary>
+        </member>
+        <member name="P:Echo.Trilean.IsKnown">
+            <summary>
+            Gets a value indicating whether the value is known (either true or false).
+            </summary>
+        </member>
+        <member name="P:Echo.Trilean.IsUnknown">
+            <summary>
+            Gets a value indicating whether the value is unknown.
+            </summary>
+        </member>
+        <member name="M:Echo.Trilean.ToBoolean">
+            <summary>
+            When the trilean value is known, obtains the boolean value.
+            </summary>
+            <returns>The boolean value.</returns>
+        </member>
+        <member name="M:Echo.Trilean.ToBooleanOrFalse">
+            <summary>
+            When the trilean value is known, obtains the boolean value, otherwise returns <c>false</c>.
+            </summary>
+            <returns>The boolean value.</returns>
+        </member>
+        <member name="M:Echo.Trilean.ToNullableBoolean">
+            <summary>
+            Converts the trilean to a nullable boolean, where null indicates the unknown state.
+            </summary>
+            <returns>The nullable boolean.</returns>
+        </member>
+        <member name="M:Echo.Trilean.op_Implicit(System.Boolean)~Echo.Trilean">
+            <summary>
+            Creates a new trilean.
+            </summary>
+            <param name="value">The boolean value.</param>
+        </member>
+        <member name="M:Echo.Trilean.op_Implicit(Echo.TrileanValue)~Echo.Trilean">
+            <summary>
+            Creates a new trilean.
+            </summary>
+            <param name="value">The trilean value.</param>
+        </member>
+        <member name="M:Echo.Trilean.op_Implicit(System.Nullable{System.Boolean})~Echo.Trilean">
+            <summary>
+            Creates a new trilean.
+            </summary>
+            <param name="value">The trilean value.</param>
+        </member>
+        <member name="M:Echo.Trilean.op_True(Echo.Trilean)">
+            <summary>
+            Determines whether the trilean is <c>true</c>.
+            </summary>
+            <param name="value">The trilean.</param>
+            <returns><c>true</c> if the <see cref="P:Echo.Trilean.Value"/> property is <see cref="F:Echo.TrileanValue.True"/>, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.Trilean.op_False(Echo.Trilean)">
+            <summary>
+            Determines whether the trilean is <c>false</c>.
+            </summary>
+            <param name="value">The trilean.</param>
+            <returns><c>false</c> if the <see cref="P:Echo.Trilean.Value"/> property is <see cref="F:Echo.TrileanValue.False"/>, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:Echo.Trilean.op_Equality(Echo.Trilean,Echo.Trilean)">
+            <summary>
+            Determines whether this trilean is exactly equal to the specified trilean.
+            </summary>
+            <param name="a">The left hand side of the comparison.</param>
+            <param name="b">The right hand side of the comparison.</param>
+            <returns>
+            <c>true</c> if the <see cref="P:Echo.Trilean.Value"/> property of both trileans are equal, <c>false</c> otherwise.
+            </returns>
+        </member>
+        <member name="M:Echo.Trilean.op_Inequality(Echo.Trilean,Echo.Trilean)">
+            <summary>
+            Determines whether this trilean is not equal to the specified trilean.
+            </summary>
+            <param name="a">The left hand side of the comparison.</param>
+            <param name="b">The right hand side of the comparison.</param>
+            <returns>
+            <c>true</c> if the <see cref="P:Echo.Trilean.Value"/> property of both trileans are different, <c>false</c> otherwise.
+            </returns>
+        </member>
+        <member name="M:Echo.Trilean.Equals(Echo.Trilean)">
+            <summary>
+            Determines whether this trilean is exactly equal to the specified trilean.
+            </summary>
+            <param name="other">The other trilean.</param>
+            <returns>
+            <c>true</c> if the <see cref="P:Echo.Trilean.Value"/> property of both trileans are equal, <c>false</c> otherwise.
+            </returns>
+        </member>
+        <member name="M:Echo.Trilean.Equals(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Trilean.GetHashCode">
+            <inheritdoc />
+        </member>
+        <member name="M:Echo.Trilean.op_LogicalNot(Echo.Trilean)">
+            <summary>
+            Inverts the trilean value.
+            </summary>
+            <param name="value">The value to invert.</param>
+            <returns>
+            Returns true if the value is false, and vice versa. If unknown, the return value is also unknown.
+            </returns>
+        </member>
+        <member name="M:Echo.Trilean.Not">
+            <summary>
+            Inverts the trilean value.
+            </summary>
+            <returns>
+            Returns true if the value is false, and vice versa. If unknown, the return value is also unknown.
+            </returns>
+        </member>
+        <member name="M:Echo.Trilean.GetLookupTableIndex(Echo.TrileanValue,Echo.TrileanValue)">
+            <summary>
+            Calculates the index within a binary operator lookup table.
+            </summary>
+            <param name="row">The row.</param>
+            <param name="column">The column.</param>
+            <returns>The index.</returns>
+        </member>
+        <member name="M:Echo.Trilean.op_BitwiseAnd(Echo.Trilean,Echo.Trilean)">
+            <summary>
+            Computes the and between two trilean values.
+            </summary>
+            <param name="a">The left hand side of the binary operator.</param>
+            <param name="b">The right hand side of the binary operator.</param>
+            <returns>Returns true if both values are true. If not, returns unknown if at
+            least one is true or unknown and the other is unknown, and false otherwise.</returns>
+        </member>
+        <member name="M:Echo.Trilean.And(Echo.Trilean)">
+            <summary>
+            Computes the and between two trilean values.
+            </summary>
+            <param name="other">The other trilean value.</param>
+            <returns>Returns true if both values are true. If not, returns unknown if at
+            least one is true or unknown and the other is unknown, and false otherwise.</returns>
+        </member>
+        <member name="M:Echo.Trilean.op_BitwiseOr(Echo.Trilean,Echo.Trilean)">
+            <summary>
+            Computes the inclusive or between two trilean values.
+            </summary>
+            <param name="a">The left hand side of the binary operator.</param>
+            <param name="b">The right hand side of the binary operator.</param>
+            <returns>Returns true if at least one of the values is true. If neither are true, returns unknown if at
+            least one is unknown, and false otherwise.</returns>
+        </member>
+        <member name="M:Echo.Trilean.Or(Echo.Trilean)">
+            <summary>
+            Computes the inclusive or between two trilean values.
+            </summary>
+            <param name="other">The other trilean value.</param>
+            <returns>Returns true if at least one of the values is true. If neither are true, returns unknown if at
+            least one is unknown, and false otherwise.</returns>
+        </member>
+        <member name="M:Echo.Trilean.op_ExclusiveOr(Echo.Trilean,Echo.Trilean)">
+            <summary>
+            Computes the exclusive or between two trilean values.
+            </summary>
+            <param name="a">The left hand side of the binary operator.</param>
+            <param name="b">The right hand side of the binary operator.</param>
+            <returns>Returns true if the two trilean values are different. If at least one is unknown,
+            the result is unknown.</returns>
+        </member>
+        <member name="M:Echo.Trilean.Xor(Echo.Trilean)">
+            <summary>
+            Computes the exclusive or between two trilean values.
+            </summary>
+            <param name="other">The other trilean value.</param>
+            <returns>Returns true if the two trilean values are different. If at least one is unknown,
+            the result is unknown.</returns>
+        </member>
+        <member name="M:Echo.Trilean.FromChar(System.Char)">
+            <summary>
+            Obtains the trilean value that is associated to the provided character.
+            </summary>
+            <param name="c">The character to parse.</param>
+            <returns>The trilean value.</returns>
+            <exception cref="T:System.FormatException">Occurs when the character is not a valid trilean digit.</exception>
+        </member>
+        <member name="M:Echo.Trilean.ToChar">
+            <summary>
+            Returns the raw value of the trilean as a single character (either '0', '1' or '?').
+            </summary>
+            <returns>The character.</returns>
+        </member>
+        <member name="M:Echo.Trilean.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Echo.TrileanValue">
+            <summary>
+            Provides members for all possible values in a ternary number system.
+            </summary>
+        </member>
+        <member name="F:Echo.TrileanValue.False">
+            <summary>
+            Indicates the true value.
+            </summary>
+        </member>
+        <member name="F:Echo.TrileanValue.True">
+            <summary>
+            Indicates the false value.
+            </summary>
+        </member>
+        <member name="F:Echo.TrileanValue.Unknown">
+            <summary>
+            Indicates the unknown value.
+            </summary>
+        </member>
+    </members>
+</doc>
